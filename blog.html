@@ -3,29 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch Blog – Premium Watch Reviews, Guides & Amazon Deals</title>
-  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post and share your passion with fellow watch lovers.">
-  <meta name="keywords" content="watch blog, watch reviews, watch buying guide, Amazon watch deals, luxury watch blog, smartwatch reviews">
+  <title>Watch Blog – Reviews, Guides & Amazon Deals | Watch Deals</title>
+  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post and share your passion.">
+  <meta name="keywords" content="watch blog, watch reviews, watch buying guide, Amazon watch deals, luxury watch blog">
+  <meta name="author" content="Syed Muhammad Noman Ali Shah">
   <link rel="canonical" href="https://watch-deals.vercel.app/blog.html">
 
-  <meta property="og:title" content="Watch Blog – Reviews, Guides & Amazon Deals">
-  <meta property="og:description" content="Expert watch reviews and buying guides with verified Amazon deals.">
-  <meta property="og:type" content="blog">
+  <style>
+    :root { --gold: #d4af37; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--dark-bg); color: #fff; line-height: 1.7; }
+    a { color: var(--gold); text-decoration: none; }
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "Watch Deals Blog",
-    "url": "https://watch-deals.vercel.app/blog.html",
-    "author": {
-      "@type": "Person",
-      "name": "Syed Muhammad Noman Ali Shah"
+    header { background: linear-gradient(135deg, #1a1a1a, #2d2d2d); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; flex-wrap: wrap; gap: 10px; }
+    .logo { font-size: 22px; font-weight: bold; color: var(--gold); letter-spacing: 2px; }
+    nav { display: flex; flex-wrap: wrap; gap: 5px; }
+    nav a { color: #ccc; margin-left: 20px; font-size: 15px; }
+    nav a:hover { color: var(--gold); }
+
+    .page-hero { text-align: center; padding: 60px 20px 40px; background: linear-gradient(135deg, #0a0a0a, #1a1a1a); border-bottom: 1px solid #222; }
+    .page-hero h1 { font-size: 42px; color: var(--gold); margin-bottom: 15px; }
+    .page-hero p { color: #aaa; font-size: 17px; max-width: 700px; margin: 0 auto; }
+
+    .content-container { max-width: 900px; margin: 0 auto; padding: 50px 30px; color: #ddd; }
+    .content-container h2 { color: var(--gold); font-size: 28px; margin: 20px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+    .blog-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 40px 0; }
+    .blog-form p { color: #aaa; margin-bottom: 20px; }
+    .blog-form input, .blog-form textarea { width: 100%; background: var(--dark-bg); border: 1px solid #333; color: #fff; padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; font-family: inherit; font-size: 15px; }
+    .blog-form textarea { min-height: 150px; resize: vertical; }
+    .blog-form input:focus, .blog-form textarea:focus { outline: none; border-color: var(--gold); }
+    .blog-form button { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+    .blog-form button:hover { background: #c49b2e; }
+
+    .blog-posts { margin-top: 30px; }
+    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px 30px; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; }
+    .blog-post:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .blog-post h3 { color: var(--gold); font-size: 22px; margin-bottom: 8px; }
+    .blog-post .meta { color: #777; font-size: 13px; margin-bottom: 15px; }
+    .blog-post .excerpt { color: #ccc; line-height: 1.7; }
+
+    footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
+    footer a { color: var(--gold); margin: 0 5px; }
+    footer a:hover { text-decoration: underline; }
+
+    .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(37,211,102,0.5); z-index: 999; transition: transform 0.3s; }
+    .whatsapp-float:hover { transform: scale(1.1); }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; padding: 15px; gap: 12px; }
+      nav { justify-content: center; width: 100%; }
+      nav a { margin: 0 8px; font-size: 13px; }
+      .page-hero h1 { font-size: 28px; }
+      .content-container { padding: 30px 20px; }
+      .content-container h2 { font-size: 22px; }
+      .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
     }
-  }
-  </script>
-
-  <link rel="stylesheet" href="styles.css">
+  </style>
 </head>
 <body>
 
@@ -49,7 +83,7 @@
 
   <div class="blog-form">
     <h2>✍️ Write Your Own Blog Post</h2>
-    <p style="color:#aaa; margin-bottom: 20px;">Share your watch story, review, or buying tip with the community.</p>
+    <p>Share your watch story, review, or buying tip with the community.</p>
     <form id="blogForm">
       <input type="text" id="blogTitle" placeholder="Blog Title (e.g., Why I Love the Seiko 5)" required maxlength="100">
       <input type="text" id="blogAuthor" placeholder="Your Name" required maxlength="50">
@@ -58,25 +92,24 @@
     </form>
   </div>
 
-  <div class="blog-posts" id="blogPosts">
-    <!-- Blog posts JavaScript se load honge -->
-  </div>
+  <h2>Recent Posts</h2>
+  <div class="blog-posts" id="blogPosts"></div>
 
 </main>
 
 <footer>
   <p>© 2025 Watch Deals. All rights reserved.</p>
-  <p style="margin-top:10px;">Affiliate Disclosure: As an Amazon Associate, I earn from qualifying purchases.</p>
+  <p style="margin-top:10px;">Affiliate Disclosure: As an Amazon Associate, we earn from qualifying purchases.</p>
   <p style="margin-top:10px;">
-    <a href="about.html">About</a> |
-    <a href="blog.html">Blog</a> |
-    <a href="contact.html">Contact</a> |
-    <a href="mailto:syedmuhammadnomanali7@gmail.com">syedmuhammadnomanali7@gmail.com</a>
+    <a href="about.html">About</a> | <a href="blog.html">Blog</a> | <a href="contact.html">Contact</a>
   </p>
+  <p style="margin-top:10px;">📧 <a href="mailto:syedmuhammadnomanali7@gmail.com">syedmuhammadnomanali7@gmail.com</a></p>
+  <p style="margin-top:5px;">💬 <a href="https://wa.me/923274002704" target="_blank">WhatsApp: 0327 400 2704</a></p>
 </footer>
 
+<a href="https://wa.me/923274002704?text=Hi%20Noman%2C%20I%20need%20help%20with%20a%20watch%20deal" class="whatsapp-float" target="_blank">💬</a>
+
 <script>
-// Default blog posts
 const defaultBlogPosts = [
   {
     id: 1,
@@ -104,10 +137,14 @@ const defaultBlogPosts = [
   }
 ];
 
-// Load posts
 let posts = JSON.parse(localStorage.getItem('watchBlogPosts')) || defaultBlogPosts;
 
-// Render posts
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 function renderPosts() {
   const container = document.getElementById('blogPosts');
   const sorted = [...posts].sort((a, b) => b.timestamp - a.timestamp);
@@ -126,14 +163,6 @@ function renderPosts() {
   `).join('');
 }
 
-// Escape HTML for safety
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// Form submit
 document.getElementById('blogForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const newPost = {
@@ -144,10 +173,8 @@ document.getElementById('blogForm').addEventListener('submit', (e) => {
     date: new Date().toISOString().split('T')[0],
     timestamp: Date.now()
   };
-  
   posts.push(newPost);
   localStorage.setItem('watchBlogPosts', JSON.stringify(posts));
-  
   document.getElementById('blogForm').reset();
   renderPosts();
   alert('✅ Your blog post has been published!');
