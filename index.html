@@ -4,20 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxury Watch Deals – Best Watches Online Pakistan | Amazon Verified</title>
-  <meta name="description" content="Shop premium luxury and smart watches from top brands like Rolex, Casio, Seiko, Apple, Fossil. Every deal personally researched on Amazon. Free delivery across Pakistan.">
-  <meta name="keywords" content="watches, luxury watches, smart watches, watch deals Pakistan, buy watches online, Rolex Amazon, Casio, Seiko, Apple Watch">
+  <meta name="description" content="Shop premium watches from top brands like Rolex, Casio, Seiko, Apple. Every deal researched on Amazon. Prices in your local currency.">
+  <meta name="keywords" content="watches, luxury watches, smart watches, watch deals, buy watches online, Rolex Amazon, Casio, Seiko">
   <meta name="author" content="Syed Muhammad Noman Ali Shah">
   <link rel="canonical" href="https://watch-deals.vercel.app/">
-  <meta property="og:title" content="Luxury Watch Deals – Best Watches Online Pakistan">
-  <meta property="og:description" content="Premium watches from top brands. Every deal researched and verified on Amazon.">
-  <meta property="og:type" content="website">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Watch Deals",
-    "url": "https://watch-deals.vercel.app/",
     "founder": {
       "@type": "Person",
       "name": "Syed Muhammad Noman Ali Shah",
@@ -29,13 +25,7 @@
   </script>
 
   <style>
-    :root {
-      --gold: #d4af37;
-      --gold-dark: #c49b2e;
-      --dark-bg: #0a0a0a;
-      --card-bg: #1a1a1a;
-      --border: #2a2a2a;
-    }
+    :root { --gold: #d4af37; --gold-dark: #c49b2e; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
@@ -44,15 +34,16 @@
 
     header { background: linear-gradient(135deg, #1a1a1a, #2d2d2d); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; flex-wrap: wrap; gap: 10px; }
     .logo { font-size: 22px; font-weight: bold; color: var(--gold); letter-spacing: 2px; }
-    nav { display: flex; flex-wrap: wrap; gap: 5px; }
-    nav a { color: #ccc; margin-left: 20px; font-size: 15px; transition: color 0.3s; }
+    nav { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    nav a { color: #ccc; margin-left: 20px; font-size: 15px; }
     nav a:hover { color: var(--gold); }
+    .currency-badge { background: var(--card-bg); border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-left: 15px; }
 
     .hero { text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #0a0a0a, #1a1a1a); }
     .hero h1 { font-size: 48px; color: var(--gold); margin-bottom: 15px; line-height: 1.2; }
     .hero p { font-size: 18px; color: #aaa; max-width: 650px; margin: 0 auto 30px; }
-    .hero .btn { background: var(--gold); color: var(--dark-bg); padding: 14px 40px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.2s, background 0.3s; }
-    .hero .btn:hover { transform: scale(1.05); background: var(--gold-dark); }
+    .hero .btn { background: var(--gold); color: var(--dark-bg); padding: 14px 40px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.2s; }
+    .hero .btn:hover { transform: scale(1.05); }
 
     .trust-badges { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 30px auto; padding: 25px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); max-width: 1000px; }
     .trust-badge { text-align: center; flex: 1; min-width: 130px; }
@@ -82,10 +73,9 @@
     .modal.active { display: flex; }
     .modal-content { background: var(--card-bg); border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; border: 1px solid var(--border); }
     .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: var(--gold); border: none; font-size: 28px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; }
-    .modal-close:hover { background: var(--gold); color: var(--dark-bg); }
     .modal-body { display: flex; gap: 25px; padding: 30px; }
     .modal-gallery { flex: 1; min-width: 250px; }
-    .modal-main-img { width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+    .modal-main-img { width: 100%; height: 300px; object-fit: cover; border-radius: 10px; }
     .modal-info { flex: 1; min-width: 250px; }
     .modal-info h2 { color: #fff; font-size: 22px; margin-bottom: 8px; }
     .modal-brand { color: var(--gold); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
@@ -96,8 +86,7 @@
     .modal-buy { font-size: 16px; padding: 15px; margin-top: 10px; }
 
     footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
-    footer a { color: var(--gold); }
-    footer a:hover { text-decoration: underline; }
+    footer a { color: var(--gold); margin: 0 5px; }
 
     .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.5); z-index: 999; transition: transform 0.3s; }
     .whatsapp-float:hover { transform: scale(1.1); }
@@ -108,12 +97,8 @@
       nav { justify-content: center; width: 100%; }
       nav a { margin: 0 8px; font-size: 13px; }
       .hero h1 { font-size: 30px; }
-      .hero p { font-size: 15px; }
       .section-title { font-size: 24px; }
       .products { padding: 0 15px 40px; gap: 20px; }
-      .brand-filters { padding: 15px; }
-      .brand-btn { padding: 8px 16px; font-size: 13px; }
-      .content-container { padding: 30px 20px; }
       .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
     }
   </style>
@@ -128,6 +113,7 @@
     <a href="blog.html">Blog</a>
     <a href="contact.html">Contact</a>
     <a href="admin.html">Admin</a>
+    <span class="currency-badge" id="currencyBadge">💱 Loading...</span>
   </nav>
 </header>
 
@@ -139,17 +125,14 @@
 
 <section class="trust-badges">
   <div class="trust-badge"><div class="num">100%</div><div class="label">Amazon Verified</div></div>
-  <div class="trust-badge"><div class="num">6+</div><div class="label">Top Brands</div></div>
+  <div class="trust-badge"><div class="num">20+</div><div class="label">Top Brands</div></div>
   <div class="trust-badge"><div class="num">Personal</div><div class="label">Research on Every Deal</div></div>
   <div class="trust-badge"><div class="num">24/7</div><div class="label">WhatsApp Support</div></div>
 </section>
 
 <h2 class="section-title" id="products">Featured Watches</h2>
 
-<section class="brand-filters" id="brandFilters">
-  <button class="brand-btn active" data-brand="all">All Brands</button>
-</section>
-
+<section class="brand-filters" id="brandFilters"></section>
 <main class="products" id="productGrid"></main>
 
 <div id="quickViewModal" class="modal" role="dialog" aria-modal="true">
@@ -183,83 +166,82 @@
   <p style="margin-top:5px;">💬 <a href="https://wa.me/923274002704" target="_blank">WhatsApp: 0327 400 2704</a></p>
 </footer>
 
-<a href="https://wa.me/923274002704?text=Hi%20Noman%2C%20I%20need%20help%20with%20a%20watch%20deal" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+<a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
 
 <script>
-// ============ PRODUCT DATA ============
-const products = [
-  {
-    id: 1,
-    name: "Classic Leather Watch",
-    brand: "Fossil",
-    originalPrice: 8999,
-    discountedPrice: 4999,
-    description: "Premium leather strap with stainless steel case. Water resistant up to 50m. Perfect for formal and casual wear. Verified on Amazon with customer protection.",
-    mainImage: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/3TVOvP0"
-  },
-  {
-    id: 2,
-    name: "Luxury Gold Watch",
-    brand: "Rolex",
-    originalPrice: 19999,
-    discountedPrice: 12999,
-    description: "Elegant gold-plated design with premium craftsmanship. Automatic movement, sapphire crystal glass. A statement piece for any occasion. Shop safely on Amazon.",
-    mainImage: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/47LIvvw"
-  },
-  {
-    id: 3,
-    name: "Smart Watch Pro",
-    brand: "Apple",
-    originalPrice: 11999,
-    discountedPrice: 6499,
-    description: "AMOLED display, heart rate monitor, GPS tracking, 7-day battery life. Water resistant. Available on Amazon with fast delivery.",
-    mainImage: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/4ySjdYH"
-  },
-  {
-    id: 4,
-    name: "Chronograph Sport Watch",
-    brand: "Seiko",
-    originalPrice: 15999,
-    discountedPrice: 8999,
-    description: "Chronograph function with tachymeter bezel. Stainless steel construction, luminous hands. Japanese movement. Verified seller on Amazon.",
-    mainImage: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/4hQEJG5"
-  },
-  {
-    id: 5,
-    name: "Minimalist Slim Watch",
-    brand: "Daniel Wellington",
-    originalPrice: 7499,
-    discountedPrice: 3999,
-    description: "Ultra-slim minimalist design with mesh strap. Perfect for everyday wear. Lightweight and comfortable. Available on Amazon with easy returns.",
-    mainImage: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/3TVOvP0"
-  },
-  {
-    id: 6,
-    name: "Diver Pro Watch",
-    brand: "Casio",
-    originalPrice: 16999,
-    discountedPrice: 9999,
-    description: "200m water resistant, luminous hands, screw-down crown. Built for adventure. Available on Amazon with fast delivery and warranty.",
-    mainImage: "https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop",
-    affiliateLink: "https://amzn.to/4yyoT9v"
+// ============ CURRENCY CONVERSION ============
+// Base prices are in PKR. These are approximate rates.
+const currencyRates = {
+  PKR: { rate: 1, symbol: 'Rs ', code: 'PKR', country: 'Pakistan' },
+  USD: { rate: 0.0036, symbol: '$', code: 'USD', country: 'USA' },
+  EUR: { rate: 0.0033, symbol: '€', code: 'EUR', country: 'Europe' },
+  GBP: { rate: 0.0028, symbol: '£', code: 'GBP', country: 'UK' },
+  INR: { rate: 0.30, symbol: '₹', code: 'INR', country: 'India' },
+  AED: { rate: 0.013, symbol: 'AED ', code: 'AED', country: 'UAE' },
+  SAR: { rate: 0.013, symbol: 'SAR ', code: 'SAR', country: 'Saudi Arabia' },
+  CAD: { rate: 0.0049, symbol: 'C$', code: 'CAD', country: 'Canada' },
+  AUD: { rate: 0.0055, symbol: 'A$', code: 'AUD', country: 'Australia' },
+  BDT: { rate: 0.44, symbol: '৳', code: 'BDT', country: 'Bangladesh' },
+  MYR: { rate: 0.016, symbol: 'RM ', code: 'MYR', country: 'Malaysia' },
+  TRY: { rate: 0.12, symbol: '₺', code: 'TRY', country: 'Turkey' }
+};
+
+// Country to currency mapping
+const countryToCurrency = {
+  'PK': 'PKR', 'US': 'USD', 'GB': 'GBP', 'IN': 'INR', 'AE': 'AED',
+  'SA': 'SAR', 'CA': 'CAD', 'AU': 'AUD', 'BD': 'BDT', 'MY': 'MYR',
+  'TR': 'TRY', 'DE': 'EUR', 'FR': 'EUR', 'IT': 'EUR', 'ES': 'EUR',
+  'NL': 'EUR', 'BE': 'EUR', 'AT': 'EUR', 'PT': 'EUR', 'IE': 'EUR',
+  'FI': 'EUR', 'GR': 'EUR'
+};
+
+let currentCurrency = currencyRates.PKR; // Default PKR
+
+async function detectCurrency() {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    const countryCode = data.country_code;
+    const currencyCode = countryToCurrency[countryCode] || 'USD';
+    currentCurrency = currencyRates[currencyCode] || currencyRates.USD;
+    document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
+  } catch (err) {
+    currentCurrency = currencyRates.USD;
+    document.getElementById('currencyBadge').textContent = `💱 USD`;
   }
+  renderProducts(products);
+}
+
+function convertPrice(pkrPrice) {
+  const converted = pkrPrice * currentCurrency.rate;
+  if (currentCurrency.code === 'PKR' || currentCurrency.code === 'INR' || currentCurrency.code === 'BDT') {
+    return currentCurrency.symbol + Math.round(converted).toLocaleString();
+  }
+  return currentCurrency.symbol + converted.toFixed(2);
+}
+
+// ============ PRODUCT DATA ============
+const defaultProducts = [
+  { id: 1, name: "Classic Leather Watch", brand: "Fossil", originalPrice: 8999, discountedPrice: 4999, description: "Premium leather strap with stainless steel case. Water resistant. Verified on Amazon.", mainImage: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/3TVOvP0" },
+  { id: 2, name: "Luxury Gold Watch", brand: "Rolex", originalPrice: 19999, discountedPrice: 12999, description: "Elegant gold-plated design. Automatic movement, sapphire crystal.", mainImage: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/47LIvvw" },
+  { id: 3, name: "Smart Watch Pro", brand: "Apple", originalPrice: 11999, discountedPrice: 6499, description: "AMOLED display, heart rate monitor, GPS. Available on Amazon.", mainImage: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/4ySjdYH" },
+  { id: 4, name: "Chronograph Sport Watch", brand: "Seiko", originalPrice: 15999, discountedPrice: 8999, description: "Chronograph with tachymeter bezel. Japanese movement.", mainImage: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/4hQEJG5" },
+  { id: 5, name: "Minimalist Slim Watch", brand: "Daniel Wellington", originalPrice: 7499, discountedPrice: 3999, description: "Ultra-slim minimalist design with mesh strap.", mainImage: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/3TVOvP0" },
+  { id: 6, name: "Diver Pro Watch", brand: "Casio", originalPrice: 16999, discountedPrice: 9999, description: "200m water resistant, luminous hands, screw-down crown.", mainImage: "https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop", video: "", affiliateLink: "https://amzn.to/4yyoT9v" }
 ];
 
-// ============ RENDER FUNCTIONS ============
+let products = JSON.parse(localStorage.getItem('watchProducts')) || defaultProducts;
+if (!localStorage.getItem('watchProducts')) {
+  localStorage.setItem('watchProducts', JSON.stringify(defaultProducts));
+}
+
+// ============ RENDER ============
 function renderBrandFilters() {
   const brands = ['all', ...new Set(products.map(p => p.brand))];
   const container = document.getElementById('brandFilters');
-  container.innerHTML = brands.map(brand => 
-    `<button class="brand-btn ${brand === 'all' ? 'active' : ''}" data-brand="${brand}">
-      ${brand === 'all' ? 'All Brands' : brand}
-    </button>`
+  container.innerHTML = brands.map(b => 
+    `<button class="brand-btn ${b === 'all' ? 'active' : ''}" data-brand="${b}">${b === 'all' ? 'All Brands' : b}</button>`
   ).join('');
-  
   container.querySelectorAll('.brand-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       container.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
@@ -276,11 +258,11 @@ function renderProducts(list) {
   if (!grid) return;
   grid.innerHTML = list.map(p => `
     <div class="product-card" onclick="openQuickView(${p.id})">
-      <img src="${p.mainImage}" alt="${p.name} - ${p.brand} watch on Amazon" loading="lazy">
+      <img src="${p.mainImage}" alt="${p.name} - ${p.brand}" loading="lazy">
       <div class="product-info">
         <h3>${p.name}</h3>
         <p class="brand-tag">${p.brand}</p>
-        <div class="price">Rs ${p.discountedPrice.toLocaleString()} <span>Rs ${p.originalPrice.toLocaleString()}</span></div>
+        <div class="price">${convertPrice(p.discountedPrice)} <span>${convertPrice(p.originalPrice)}</span></div>
         <button class="buy-btn">View Details</button>
       </div>
     </div>
@@ -290,15 +272,13 @@ function renderProducts(list) {
 function openQuickView(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
-  
   document.getElementById('modalMainImage').src = product.mainImage;
   document.getElementById('modalTitle').textContent = product.name;
   document.getElementById('modalBrand').textContent = product.brand;
-  document.getElementById('modalDiscountedPrice').textContent = `Rs ${product.discountedPrice.toLocaleString()}`;
-  document.getElementById('modalOriginalPrice').textContent = `Rs ${product.originalPrice.toLocaleString()}`;
+  document.getElementById('modalDiscountedPrice').textContent = convertPrice(product.discountedPrice);
+  document.getElementById('modalOriginalPrice').textContent = convertPrice(product.originalPrice);
   document.getElementById('modalDescription').textContent = product.description;
   document.getElementById('modalBuyBtn').href = product.affiliateLink;
-  
   document.getElementById('modalBuyBtn').onclick = () => trackClick(product);
   document.getElementById('quickViewModal').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -315,17 +295,19 @@ function trackClick(product) {
     productId: product.id,
     productName: product.name,
     brand: product.brand,
+    currency: currentCurrency.code,
     date: new Date().toISOString().split('T')[0],
     timestamp: Date.now()
   });
   localStorage.setItem('watchClicks', JSON.stringify(clicks));
 }
 
-// ============ INITIALIZE ============
+// ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   renderBrandFilters();
   renderProducts(products);
-  
+  detectCurrency();
+
   document.getElementById('closeModal').addEventListener('click', closeModal);
   document.getElementById('quickViewModal').addEventListener('click', (e) => {
     if (e.target.id === 'quickViewModal') closeModal();
