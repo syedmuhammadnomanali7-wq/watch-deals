@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /analytics.html
+
+Sitemap: https://watch-deals.vercel.app/sitemap.xml
