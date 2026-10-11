@@ -18,15 +18,13 @@
     nav a:hover { color: var(--gold); }
     .logout-btn { background: #dc3545; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-left: 20px; }
 
-    /* LOGIN SCREEN */
     .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .login-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 40px; max-width: 400px; width: 100%; text-align: center; }
     .login-box h1 { color: var(--gold); margin-bottom: 10px; font-size: 28px; }
     .login-box p { color: #aaa; margin-bottom: 25px; font-size: 14px; }
     .login-box input { width: 100%; background: var(--dark-bg); border: 1px solid #333; color: #fff; padding: 14px 15px; border-radius: 8px; font-size: 16px; margin-bottom: 15px; }
     .login-box input:focus { outline: none; border-color: var(--gold); }
-    .login-box button { width: 100%; background: var(--gold); color: var(--dark-bg); border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
-    .login-box button:hover { background: var(--gold-dark); }
+    .login-box button { width: 100%; background: var(--gold); color: var(--dark-bg); border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
     .login-error { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; }
 
     .admin-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: none; }
@@ -39,18 +37,15 @@
     .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus { outline: none; border-color: var(--gold); }
     .admin-form textarea { min-height: 100px; resize: vertical; }
 
-    .image-tabs { display: flex; gap: 10px; margin-bottom: 10px; }
-    .image-tab { background: transparent; color: #ccc; border: 1px solid #333; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-    .image-tab.active { background: var(--gold); color: var(--dark-bg); border-color: var(--gold); }
+    .image-row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .image-row input { flex: 1; }
+    .remove-img-btn { background: #dc3545; color: #fff; border: none; padding: 0 14px; border-radius: 8px; cursor: pointer; font-size: 18px; }
+    .add-img-btn { background: transparent; color: var(--gold); border: 1px dashed var(--gold); padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; font-size: 14px; }
 
-    .image-preview { margin-top: 10px; max-width: 200px; border-radius: 8px; border: 1px solid var(--border); display: none; }
-
-    .btn-primary { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; margin-right: 10px; transition: background 0.3s; }
+    .btn-primary { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; margin-right: 10px; }
     .btn-primary:hover { background: var(--gold-dark); }
     .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
-    .btn-secondary:hover { background: var(--gold); color: var(--dark-bg); }
     .btn-danger { background: #dc3545; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-    .btn-danger:hover { background: #c82333; }
 
     .admin-list { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 30px; overflow-x: auto; }
     .admin-list h2 { color: var(--gold); margin-bottom: 20px; font-size: 22px; }
@@ -62,6 +57,7 @@
     .admin-list td button.del { background: #dc3545; color: #fff; }
 
     .info-box { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); border-radius: 10px; padding: 20px; margin-bottom: 30px; color: #ddd; font-size: 14px; }
+    .help-text { color: #888; font-size: 12px; margin-top: 4px; }
 
     footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
 
@@ -74,7 +70,6 @@
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <h1>🔐 Admin Login</h1>
@@ -85,7 +80,6 @@
   </div>
 </div>
 
-<!-- ADMIN DASHBOARD (hidden until login) -->
 <header style="display:none;" id="mainHeader">
   <div class="logo">⌚ WATCH DEALS – Admin</div>
   <nav>
@@ -99,7 +93,7 @@
   <h1>Product Management Dashboard</h1>
 
   <div class="info-box">
-    <strong>ℹ️ Info:</strong> Yahan se products add/edit/delete karen. Images upload kar sakte hain ya URL de sakte hain. Prices PKR (base) mein daalen — website visitors ko apne country ki currency mein automatic dikhayegi.
+    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Images Cloudinary ya kisi bhi image hosting se laga sakte hain. Video ke liye YouTube embed URL use karen.
   </div>
 
   <section class="admin-form">
@@ -145,22 +139,19 @@
       <label>Description *</label>
       <textarea id="description" required placeholder="Product details, features..."></textarea>
 
-      <label>Image *</label>
-      <div class="image-tabs">
-        <button type="button" class="image-tab active" onclick="switchImageTab('url')">🔗 Image URL</button>
-        <button type="button" class="image-tab" onclick="switchImageTab('upload')">📤 Upload Image</button>
+      <label>Product Images * (pehli image main image hogi)</label>
+      <p class="help-text">Har image ka URL alag row mein daalen. Cloudinary se upload karke URL copy karen. Kam az kam 1, zyada se zyada 6 images.</p>
+      <div id="imagesContainer">
+        <div class="image-row">
+          <input type="url" class="image-input" placeholder="https://res.cloudinary.com/..." required>
+          <button type="button" class="remove-img-btn" onclick="removeImageRow(this)">✕</button>
+        </div>
       </div>
-      <div id="urlTab">
-        <input type="url" id="mainImageUrl" placeholder="https://images.unsplash.com/...">
-      </div>
-      <div id="uploadTab" style="display:none;">
-        <input type="file" id="imageFile" accept="image/*" onchange="previewImage(event)">
-        <img id="imagePreview" class="image-preview" alt="Preview">
-      </div>
-      <input type="hidden" id="mainImage" required>
+      <button type="button" class="add-img-btn" onclick="addImageRow()">+ Add Another Image</button>
 
       <label>YouTube Video Embed URL (optional)</label>
       <input type="url" id="video" placeholder="https://www.youtube.com/embed/VIDEO_ID">
+      <p class="help-text">YouTube par video upload karen → Share → Embed → src ka URL copy karen (jaise https://www.youtube.com/embed/dQw4w9WgXcQ)</p>
 
       <label>Amazon Affiliate Link *</label>
       <input type="url" id="affiliateLink" required placeholder="https://amzn.to/...">
@@ -174,7 +165,7 @@
     <h2>📦 All Products (<span id="productCount">0</span>)</h2>
     <table>
       <thead>
-        <tr><th>Image</th><th>Name</th><th>Brand</th><th>Price</th><th>Actions</th></tr>
+        <tr><th>Image</th><th>Name</th><th>Brand</th><th>Price</th><th>Images</th><th>Actions</th></tr>
       </thead>
       <tbody id="productTableBody"></tbody>
     </table>
@@ -187,12 +178,8 @@
 </footer>
 
 <script>
-// ============================================
-// ADMIN PASSWORD - CHANGE THIS!
-// ============================================
-const ADMIN_PASSWORD = "Sidrabilal1#";  
+const ADMIN_PASSWORD = "NomanWatch2025";
 
-// ============ LOGIN ============
 function checkPassword() {
   const input = document.getElementById('adminPassword').value;
   if (input === ADMIN_PASSWORD) {
@@ -202,7 +189,6 @@ function checkPassword() {
     document.getElementById('loginError').style.display = 'block';
   }
 }
-
 document.getElementById('adminPassword').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') checkPassword();
 });
@@ -218,40 +204,27 @@ function showDashboard() {
   document.getElementById('adminDashboard').style.display = 'block';
 }
 
-if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-  showDashboard();
+if (sessionStorage.getItem('adminLoggedIn') === 'true') showDashboard();
+
+// ============ IMAGE ROWS ============
+function addImageRow(value = '') {
+  const container = document.getElementById('imagesContainer');
+  const row = document.createElement('div');
+  row.className = 'image-row';
+  row.innerHTML = `
+    <input type="url" class="image-input" placeholder="https://res.cloudinary.com/..." value="${value}">
+    <button type="button" class="remove-img-btn" onclick="removeImageRow(this)">✕</button>
+  `;
+  container.appendChild(row);
 }
 
-// ============ IMAGE TAB SWITCHING ============
-let imageMode = 'url';
-let uploadedImageData = '';
-
-function switchImageTab(mode) {
-  imageMode = mode;
-  document.querySelectorAll('.image-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('urlTab').style.display = mode === 'url' ? 'block' : 'none';
-  document.getElementById('uploadTab').style.display = mode === 'upload' ? 'block' : 'none';
-}
-
-function previewImage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  if (file.size > 500000) {
-    alert('⚠️ Image bohat bari hai (500KB se zyada). Chhoti image use karen ya URL mode use karen.');
-    event.target.value = '';
+function removeImageRow(btn) {
+  const rows = document.querySelectorAll('#imagesContainer .image-row');
+  if (rows.length <= 1) {
+    alert('Kam az kam 1 image zaroori hai.');
     return;
   }
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    uploadedImageData = e.target.result;
-    const preview = document.getElementById('imagePreview');
-    preview.src = uploadedImageData;
-    preview.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+  btn.parentElement.remove();
 }
 
 // ============ PRODUCTS ============
@@ -263,32 +236,36 @@ function renderTable() {
   document.getElementById('productCount').textContent = products.length;
 
   if (products.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#777;">No products yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#777;">No products yet.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = products.map(p => `
-    <tr>
-      <td><img src="${p.mainImage}" alt="${p.name}"></td>
-      <td>${p.name.substring(0, 35)}${p.name.length > 35 ? '...' : ''}</td>
-      <td>${p.brand}</td>
-      <td>Rs ${p.discountedPrice.toLocaleString()}</td>
-      <td>
-        <button onclick="editProduct(${p.id})">✏️ Edit</button>
-        <button class="del" onclick="deleteProduct(${p.id})">🗑️ Delete</button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = products.map(p => {
+    const imgCount = (p.images && p.images.length) ? p.images.length : 1;
+    return `
+      <tr>
+        <td><img src="${p.mainImage}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/50/1a1a1a/d4af37?text=W'"></td>
+        <td>${p.name.substring(0, 30)}${p.name.length > 30 ? '...' : ''}</td>
+        <td>${p.brand}</td>
+        <td>Rs ${p.discountedPrice.toLocaleString()}</td>
+        <td>${imgCount} 📷</td>
+        <td>
+          <button onclick="editProduct(${p.id})">✏️ Edit</button>
+          <button class="del" onclick="deleteProduct(${p.id})">🗑️ Delete</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 document.getElementById('productForm').addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const urlImage = document.getElementById('mainImageUrl').value.trim();
-  const finalImage = imageMode === 'upload' ? uploadedImageData : urlImage;
+  const imageInputs = document.querySelectorAll('#imagesContainer .image-input');
+  const images = Array.from(imageInputs).map(i => i.value.trim()).filter(v => v);
 
-  if (!finalImage) {
-    alert('⚠️ Please provide an image (URL ya upload).');
+  if (images.length === 0) {
+    alert('⚠️ Kam az kam 1 image URL daalen.');
     return;
   }
 
@@ -299,7 +276,8 @@ document.getElementById('productForm').addEventListener('submit', (e) => {
     originalPrice: parseInt(document.getElementById('originalPrice').value),
     discountedPrice: parseInt(document.getElementById('discountedPrice').value),
     description: document.getElementById('description').value.trim(),
-    mainImage: finalImage,
+    mainImage: images[0],
+    images: images,
     video: document.getElementById('video').value.trim(),
     affiliateLink: document.getElementById('affiliateLink').value.trim()
   };
@@ -312,13 +290,7 @@ document.getElementById('productForm').addEventListener('submit', (e) => {
     alert('✅ Product added!');
   }
 
-  try {
-    localStorage.setItem('watchProducts', JSON.stringify(products));
-  } catch (err) {
-    alert('⚠️ Storage full! Purane products delete karen ya image URL use karen.');
-    return;
-  }
-
+  localStorage.setItem('watchProducts', JSON.stringify(products));
   resetForm();
   renderTable();
 });
@@ -332,9 +304,15 @@ function editProduct(id) {
   document.getElementById('originalPrice').value = p.originalPrice;
   document.getElementById('discountedPrice').value = p.discountedPrice;
   document.getElementById('description').value = p.description;
-  document.getElementById('mainImageUrl').value = p.mainImage.startsWith('data:') ? '' : p.mainImage;
   document.getElementById('video').value = p.video || '';
   document.getElementById('affiliateLink').value = p.affiliateLink;
+
+  // Load images
+  const container = document.getElementById('imagesContainer');
+  container.innerHTML = '';
+  const imgs = (p.images && p.images.length) ? p.images : [p.mainImage];
+  imgs.forEach(img => addImageRow(img));
+
   document.getElementById('formTitle').textContent = '✏️ Edit Product';
   document.getElementById('cancelEdit').style.display = 'inline-block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -359,13 +337,13 @@ function clearAllProducts() {
 function resetForm() {
   document.getElementById('productForm').reset();
   document.getElementById('editId').value = '';
-  document.getElementById('mainImage').value = '';
-  document.getElementById('imagePreview').style.display = 'none';
-  uploadedImageData = '';
-  imageMode = 'url';
-  document.querySelectorAll('.image-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-  document.getElementById('urlTab').style.display = 'block';
-  document.getElementById('uploadTab').style.display = 'none';
+  const container = document.getElementById('imagesContainer');
+  container.innerHTML = `
+    <div class="image-row">
+      <input type="url" class="image-input" placeholder="https://res.cloudinary.com/..." required>
+      <button type="button" class="remove-img-btn" onclick="removeImageRow(this)">✕</button>
+    </div>
+  `;
   editId = null;
   document.getElementById('formTitle').textContent = '➕ Add New Product';
   document.getElementById('cancelEdit').style.display = 'none';
