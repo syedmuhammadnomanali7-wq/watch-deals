@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /about.html
+Allow: /blog.html
+Allow: /contact.html
 Disallow: /admin.html
 Disallow: /analytics.html
 
-Sitemap: https://watch-deals.vercel.app/sitemap.xml
+Sitemap: https://watch-deals-ruddy.vercel.app/sitemap.xml
