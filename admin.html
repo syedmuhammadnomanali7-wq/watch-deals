@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard – Watch Deals</title>
   <meta name="robots" content="noindex, nofollow">
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
   <style>
     :root { --gold: #d4af37; --gold-dark: #c49b2e; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,6 +43,8 @@
     .image-row input { flex: 1; }
     .remove-img-btn { background: #dc3545; color: #fff; border: none; padding: 0 14px; border-radius: 8px; cursor: pointer; font-size: 18px; }
     .add-img-btn { background: transparent; color: var(--gold); border: 1px dashed var(--gold); padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; font-size: 14px; }
+    .upload-btn { background: linear-gradient(135deg, #d4af37, #c49b2e); color: #0a0a0a; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; margin-bottom: 10px; font-weight: bold; font-size: 15px; }
+    .upload-btn:hover { opacity: 0.9; }
 
     .btn-primary { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; margin-right: 10px; }
     .btn-primary:hover { background: var(--gold-dark); }
@@ -96,7 +100,7 @@
   <h1>Product Management Dashboard</h1>
 
   <div class="info-box">
-    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Brand dropdown mein <strong>"➕ Other"</strong> select karke apna custom brand name bhi likh sakte hain.
+    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Brand dropdown mein <strong>"➕ Other"</strong> select karke apna custom brand name bhi likh sakte hain. Images <strong>direct Cloudinary</strong> par upload karne ke liye "📤 Upload to Cloudinary" button use karein.
   </div>
 
   <section class="admin-form">
@@ -149,7 +153,10 @@
       <textarea id="description" required placeholder="Product details, features..."></textarea>
 
       <label>Product Images * (pehli image main image hogi)</label>
-      <p class="help-text">Har image ka URL alag row mein daalen. Cloudinary se upload karke URL copy karen. Kam az kam 1, zyada se zyada 6 images.</p>
+      <p class="help-text">Neeche wale "📤 Upload to Cloudinary" button se direct image upload karein — URL khud-ba-khud input mein aa jayega. Ya manually Cloudinary URL paste karein. Kam az kam 1, zyada se zyada 6 images.</p>
+
+      <button type="button" class="upload-btn" onclick="openCloudinaryWidget()">📤 Upload to Cloudinary</button>
+
       <div id="imagesContainer">
         <div class="image-row">
           <input type="url" class="image-input" placeholder="https://res.cloudinary.com/..." required>
@@ -187,6 +194,13 @@
 </footer>
 
 <script>
+/* ============================================================
+   ⚙️ CLOUDINARY CONFIG — YAHAN APNI VALUES DAALEIN
+   ============================================================ */
+const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";        // e.g. "dxxxxxx"
+const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET";  // e.g. "watch_deals_unsigned"
+/* ============================================================ */
+
 const ADMIN_PASSWORD = "NomanWatch2025";
 const PREDEFINED_BRANDS = ['Rolex', 'Casio', 'Seiko', 'Apple', 'Samsung', 'Fossil',
   'Garmin', 'Citizen', 'Tissot', 'Omega', 'Tag Heuer', 'Daniel Wellington',
@@ -255,6 +269,57 @@ function removeImageRow(btn) {
     return;
   }
   btn.parentElement.remove();
+}
+
+// ============ CLOUDINARY UPLOAD WIDGET ============
+function openCloudinaryWidget() {
+  if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME') {
+    alert('⚠️ Pehle script mein CLOUDINARY_CLOUD_NAME aur CLOUDINARY_UPLOAD_PRESET set karein.');
+    return;
+  }
+
+  const widget = cloudinary.createUploadWidget({
+    cloudName: CLOUDINARY_CLOUD_NAME,
+    uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+    multiple: true,
+    maxFiles: 6,
+    sources: ['local', 'url', 'camera'],
+    folder: 'watch-deals',
+    clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+    maxImageFileSize: 5000000 // 5MB
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      fillImageUrl(result.info.secure_url);
+    }
+    if (error) {
+      console.error('Cloudinary upload error:', error);
+    }
+  });
+
+  widget.open();
+}
+
+// Upload ki gayi image ka URL pehle khali input mein daalein, warna naya row banayein
+function fillImageUrl(url) {
+  const inputs = document.querySelectorAll('#imagesContainer .image-input');
+  let filled = false;
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (!inputs[i].value.trim()) {
+      inputs[i].value = url;
+      filled = true;
+      break;
+    }
+  }
+
+  if (!filled) {
+    const rows = document.querySelectorAll('#imagesContainer .image-row');
+    if (rows.length >= 6) {
+      alert('⚠️ Maximum 6 images allowed. Ye URL copy kar lein:\n' + url);
+      return;
+    }
+    addImageRow(url);
+  }
 }
 
 // ============ PRODUCTS ============
