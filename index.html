@@ -146,17 +146,14 @@
 <section class="brand-filters" id="brandFilters"></section>
 <main class="products" id="productGrid"></main>
 
-<!-- ============ QUICK VIEW MODAL ============ -->
 <div id="quickViewModal" class="modal" role="dialog" aria-modal="true">
   <div class="modal-content">
     <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
     <div class="modal-body">
-      <!-- GALLERY -->
       <div class="modal-gallery">
         <img id="modalMainImage" src="" alt="Product Image" class="modal-main-img">
         <div class="modal-thumbnails" id="modalThumbnails"></div>
       </div>
-      <!-- INFO -->
       <div class="modal-info">
         <h2 id="modalTitle"></h2>
         <p id="modalBrand" class="modal-brand"></p>
@@ -164,14 +161,9 @@
           <span id="modalDiscountedPrice" class="discounted"></span>
           <span id="modalOriginalPrice" class="original"></span>
         </div>
-        <!-- 1. BUY BUTTON RIGHT AFTER PRICE -->
         <a id="modalBuyBtn" href="#" target="_blank" rel="noopener noreferrer sponsored" class="buy-btn modal-buy">Buy Now on Amazon →</a>
-
-        <!-- 2. DESCRIPTION -->
         <div class="modal-section-title">📝 Description</div>
         <p id="modalDescription" class="modal-desc"></p>
-
-        <!-- 3. VIDEO -->
         <div id="modalVideoSection" style="display:none;">
           <div class="modal-section-title">🎥 Video</div>
           <div id="modalVideoContainer" class="modal-video"></div>
@@ -194,7 +186,7 @@
 <a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
 
 <script>
-// ============ CURRENCY ============
+// ============ CURRENCY RATES ============
 const currencyRates = {
   PKR: { rate: 1, symbol: 'Rs ', code: 'PKR' },
   USD: { rate: 0.0036, symbol: '$', code: 'USD' },
@@ -212,27 +204,7 @@ const currencyRates = {
 
 let currentCurrency = currencyRates.PKR;
 
-function detectCurrency() {
-  let currencyCode = 'PKR';
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    const tzMap = {
-      'Asia/Karachi': 'PKR', 'Asia/Kolkata': 'INR', 'Asia/Calcutta': 'INR',
-      'Asia/Dhaka': 'BDT', 'Asia/Dubai': 'AED', 'Asia/Riyadh': 'SAR',
-      'Asia/Kuala_Lumpur': 'MYR', 'Asia/Istanbul': 'TRY', 'Asia/Tokyo': 'USD',
-      'America/New_York': 'USD', 'America/Los_Angeles': 'USD', 'America/Chicago': 'USD',
-      'America/Denver': 'USD', 'America/Toronto': 'CAD', 'America/Vancouver': 'CAD',
-      'Europe/London': 'GBP', 'Europe/Paris': 'EUR', 'Europe/Berlin': 'EUR',
-      'Europe/Rome': 'EUR', 'Europe/Madrid': 'EUR', 'Europe/Amsterdam': 'EUR',
-      'Europe/Brussels': 'EUR', 'Australia/Sydney': 'AUD', 'Australia/Melbourne': 'AUD'
-    };
-    currencyCode = tzMap[tz] || 'PKR';
-  } catch (err) { currencyCode = 'PKR'; }
-  currentCurrency = currencyRates[currencyCode] || currencyRates.PKR;
-  document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
-  renderProducts(products);
-}
-// Country detect karne ke liye timezone map
+// ============ TIMEZONE → COUNTRY MAP ============
 const tzToCountry = {
   'Asia/Karachi': { code: 'PK', name: 'Pakistan', flag: '🇵🇰' },
   'Asia/Kolkata': { code: 'IN', name: 'India', flag: '🇮🇳' },
@@ -271,6 +243,33 @@ function detectCountry() {
     currentCountry = { code: 'XX', name: 'Unknown', flag: '🌍' };
   }
 }
+
+// ============ TIMEZONE → CURRENCY MAP ============
+function detectCurrency() {
+  let currencyCode = 'PKR';
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const tzMap = {
+      'Asia/Karachi': 'PKR', 'Asia/Kolkata': 'INR', 'Asia/Calcutta': 'INR',
+      'Asia/Dhaka': 'BDT', 'Asia/Dubai': 'AED', 'Asia/Riyadh': 'SAR',
+      'Asia/Kuala_Lumpur': 'MYR', 'Asia/Istanbul': 'TRY', 'Asia/Tokyo': 'USD',
+      'America/New_York': 'USD', 'America/Los_Angeles': 'USD', 'America/Chicago': 'USD',
+      'America/Denver': 'USD', 'America/Toronto': 'CAD', 'America/Vancouver': 'CAD',
+      'Europe/London': 'GBP', 'Europe/Paris': 'EUR', 'Europe/Berlin': 'EUR',
+      'Europe/Rome': 'EUR', 'Europe/Madrid': 'EUR', 'Europe/Amsterdam': 'EUR',
+      'Europe/Brussels': 'EUR', 'Australia/Sydney': 'AUD', 'Australia/Melbourne': 'AUD'
+    };
+    currencyCode = tzMap[tz] || 'PKR';
+  } catch (err) { currencyCode = 'PKR'; }
+  currentCurrency = currencyRates[currencyCode] || currencyRates.PKR;
+  document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
+  
+  // Country bhi detect karen
+  detectCountry();
+  
+  renderProducts(products);
+}
+
 function convertPrice(pkrPrice) {
   const converted = pkrPrice * currentCurrency.rate;
   if (currentCurrency.code === 'PKR' || currentCurrency.code === 'INR' || currentCurrency.code === 'BDT') {
@@ -280,8 +279,6 @@ function convertPrice(pkrPrice) {
 }
 
 // ============ PRODUCT DATA ============
-// images: array of image URLs
-// video: YouTube embed URL (optional)
 const defaultProducts = [
   {
     id: 1, name: "Classic Leather Watch", brand: "Fossil",
@@ -300,9 +297,7 @@ const defaultProducts = [
     originalPrice: 19999, discountedPrice: 12999,
     description: "Elegant gold-plated design. Automatic movement, sapphire crystal. A timeless classic for any occasion.",
     mainImage: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop"
-    ],
+    images: ["https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop"],
     video: "",
     affiliateLink: "https://amzn.to/47LIvvw"
   },
@@ -311,9 +306,7 @@ const defaultProducts = [
     originalPrice: 11999, discountedPrice: 6499,
     description: "AMOLED display, heart rate monitor, GPS tracking. Available on Amazon with fast delivery.",
     mainImage: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop"
-    ],
+    images: ["https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop"],
     video: "",
     affiliateLink: "https://amzn.to/4ySjdYH"
   },
@@ -322,9 +315,7 @@ const defaultProducts = [
     originalPrice: 15999, discountedPrice: 8999,
     description: "Chronograph with tachymeter bezel. Japanese movement, stainless steel construction.",
     mainImage: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop"
-    ],
+    images: ["https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop"],
     video: "",
     affiliateLink: "https://amzn.to/4hQEJG5"
   },
@@ -333,9 +324,7 @@ const defaultProducts = [
     originalPrice: 7499, discountedPrice: 3999,
     description: "Ultra-slim minimalist design with mesh strap. Lightweight and comfortable for everyday wear.",
     mainImage: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop"
-    ],
+    images: ["https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop"],
     video: "",
     affiliateLink: "https://amzn.to/3TVOvP0"
   },
@@ -344,9 +333,7 @@ const defaultProducts = [
     originalPrice: 16999, discountedPrice: 9999,
     description: "200m water resistant, luminous hands, screw-down crown. Built for adventure.",
     mainImage: "https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop"
-    ],
+    images: ["https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop"],
     video: "",
     affiliateLink: "https://amzn.to/4yyoT9v"
   }
@@ -395,16 +382,13 @@ function openQuickView(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
 
-  // All images: agar images array hai to use karen, warna mainImage
   const images = (product.images && product.images.length > 0) ? product.images : [product.mainImage];
 
-  // Main image
   const mainImg = document.getElementById('modalMainImage');
   mainImg.src = images[0];
   mainImg.alt = product.name;
   mainImg.onerror = function() { this.src = 'https://via.placeholder.com/600x400/1a1a1a/d4af37?text=Watch'; };
 
-  // Thumbnails
   const thumbs = document.getElementById('modalThumbnails');
   if (images.length > 1) {
     thumbs.innerHTML = images.map((img, i) => 
@@ -416,7 +400,6 @@ function openQuickView(id) {
     thumbs.style.display = 'none';
   }
 
-  // Info
   document.getElementById('modalTitle').textContent = product.name;
   document.getElementById('modalBrand').textContent = product.brand;
   document.getElementById('modalDiscountedPrice').textContent = convertPrice(product.discountedPrice);
@@ -424,7 +407,6 @@ function openQuickView(id) {
   document.getElementById('modalDescription').textContent = product.description || 'No description available.';
   document.getElementById('modalBuyBtn').href = product.affiliateLink;
 
-  // Video
   const videoSection = document.getElementById('modalVideoSection');
   const videoContainer = document.getElementById('modalVideoContainer');
   if (product.video && product.video.trim() !== '') {
@@ -435,10 +417,8 @@ function openQuickView(id) {
     videoSection.style.display = 'none';
   }
 
-  // Track click
   document.getElementById('modalBuyBtn').onclick = () => trackClick(product);
 
-  // Show
   document.getElementById('quickViewModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -454,6 +434,7 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
+// ============ TRACK CLICK WITH COUNTRY ============
 function trackClick(product) {
   let clicks = JSON.parse(localStorage.getItem('watchClicks')) || [];
   clicks.push({
@@ -461,12 +442,16 @@ function trackClick(product) {
     productName: product.name,
     brand: product.brand,
     currency: currentCurrency.code,
+    country: currentCountry.name,
+    countryCode: currentCountry.code,
+    countryFlag: currentCountry.flag,
     date: new Date().toISOString().split('T')[0],
     timestamp: Date.now()
   });
   localStorage.setItem('watchClicks', JSON.stringify(clicks));
 }
 
+// ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   renderBrandFilters();
   renderProducts(products);
