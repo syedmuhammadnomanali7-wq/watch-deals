@@ -21,6 +21,9 @@
   <meta name="twitter:title" content="Watch Deals – Best Luxury & Premium Watches Online">
   <meta name="twitter:description" content="Premium watches — personally researched, Amazon verified.">
 
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -80,7 +83,6 @@
     .hero-mini-trust div strong { color: var(--gold); font-size: 15px; }
     .hero-mini-trust .tick { color: #4caf50; font-size: 16px; }
 
-    /* RIGHT — Premium Watch SLIDESHOW */
     .hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
     .premium-watch-card { position: relative; background: linear-gradient(160deg, #1a1a1a, #0f0f0f); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 24px; padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212, 175, 55, 0.15); width: 100%; max-width: 460px; overflow: hidden; }
     .premium-watch-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 60%); animation: rotateGlow 8s linear infinite; pointer-events: none; }
@@ -88,100 +90,22 @@
 
     .premium-badge-top { position: absolute; top: 20px; left: 20px; background: linear-gradient(135deg, #d4af37, #b8941f); color: #0a0a0a; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; z-index: 5; }
 
-    /* SLIDESHOW CONTAINER */
-    .premium-slideshow {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      background: radial-gradient(circle at center, #222, #0a0a0a);
-      aspect-ratio: 1/1;
-      margin-bottom: 20px;
-      z-index: 2;
-    }
-    .premium-slide {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5%;
-    }
+    .premium-slideshow { position: relative; border-radius: 18px; overflow: hidden; background: radial-gradient(circle at center, #222, #0a0a0a); aspect-ratio: 1/1; margin-bottom: 20px; z-index: 2; }
+    .premium-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; padding: 5%; }
     .premium-slide.active { opacity: 1; z-index: 2; }
-    .premium-slide img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 14px;
-      transition: transform 0.6s ease;
-    }
+    .premium-slide img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; transition: transform 0.6s ease; }
     .premium-watch-card:hover .premium-slide.active img { transform: scale(1.06) rotate(-2deg); }
 
-    /* SLIDE NAV ARROWS */
-    .slide-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.65);
-      color: var(--gold);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 6;
-      transition: all 0.3s;
-      backdrop-filter: blur(4px);
-    }
+    .slide-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.65); color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.4); width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; z-index: 6; transition: all 0.3s; backdrop-filter: blur(4px); }
     .slide-nav:hover { background: var(--gold); color: #0a0a0a; border-color: var(--gold); transform: translateY(-50%) scale(1.1); }
     .slide-nav.prev { left: 12px; }
     .slide-nav.next { right: 12px; }
 
-    /* SLIDE DOTS */
-    .slide-dots {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-      z-index: 6;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 6px 10px;
-      border-radius: 20px;
-      backdrop-filter: blur(4px);
-    }
-    .slide-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      cursor: pointer;
-      transition: all 0.3s;
-      border: none;
-      padding: 0;
-    }
+    .slide-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 6; background: rgba(0, 0, 0, 0.5); padding: 6px 10px; border-radius: 20px; backdrop-filter: blur(4px); }
+    .slide-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s; border: none; padding: 0; }
     .slide-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
 
-    /* SLIDE COUNTER */
-    .slide-counter {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.65);
-      color: var(--gold);
-      padding: 5px 12px;
-      border-radius: 15px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      z-index: 6;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-    }
+    .slide-counter { position: absolute; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.65); color: var(--gold); padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: 700; letter-spacing: 1px; z-index: 6; backdrop-filter: blur(4px); border: 1px solid rgba(212, 175, 55, 0.3); }
 
     .premium-info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px; position: relative; z-index: 2; transition: opacity 0.4s; }
     .premium-info-row h3 { color: #fff; font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
@@ -223,6 +147,8 @@
     .buy-btn { display: block; width: 100%; text-align: center; background: var(--gold); color: var(--dark-bg); padding: 12px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background 0.3s; border: none; cursor: pointer; font-size: 15px; }
     .buy-btn:hover { background: var(--gold-dark); }
 
+    .loading-products { text-align: center; padding: 60px 20px; grid-column: 1 / -1; color: #888; font-size: 15px; }
+
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
     .modal.active { display: flex; }
     .modal-content { background: var(--card-bg); border-radius: 16px; max-width: 950px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; border: 1px solid var(--border); }
@@ -245,17 +171,7 @@
     .modal-desc { color: #ccc; font-size: 15px; line-height: 1.7; margin-bottom: 15px; }
     .modal-video iframe { width: 100%; height: 220px; border-radius: 10px; border: none; }
 
-    /* ============================================
-       PREMIUM FOOTER WITH DEVELOPER SIGNATURE
-       ============================================ */
-    footer {
-      background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
-      color: #888;
-      border-top: 1px solid #222;
-      margin-top: 60px;
-      padding: 50px 40px 20px;
-      position: relative;
-    }
+    footer { background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%); color: #888; border-top: 1px solid #222; margin-top: 60px; padding: 50px 40px 20px; position: relative; }
     footer::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); }
     .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 40px; padding-bottom: 40px; }
     .footer-brand .footer-logo { font-size: 24px; font-weight: bold; color: #d4af37; letter-spacing: 3px; margin-bottom: 12px; }
@@ -360,7 +276,6 @@
   </nav>
 </header>
 
-<!-- ============ PREMIUM HERO WITH SLIDESHOW ============ -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
@@ -390,9 +305,7 @@
       <div class="premium-watch-card">
         <div class="premium-badge-top">⭐ Premium Pick</div>
 
-        <!-- SLIDESHOW -->
         <div class="premium-slideshow" id="premiumSlideshow">
-          <!-- Slides injected by JS -->
           <button class="slide-nav prev" id="slidePrev" aria-label="Previous">❮</button>
           <button class="slide-nav next" id="slideNext" aria-label="Next">❯</button>
           <div class="slide-counter" id="slideCounter">1 / 1</div>
@@ -432,7 +345,9 @@
 <h2 class="section-title" id="products">Featured Premium Watches</h2>
 
 <section class="brand-filters" id="brandFilters"></section>
-<main class="products" id="productGrid"></main>
+<main class="products" id="productGrid">
+  <div class="loading-products">⏳ Products load ho rahe hain...</div>
+</main>
 
 <div id="quickViewModal" class="modal" role="dialog" aria-modal="true">
   <div class="modal-content">
@@ -461,7 +376,6 @@
   </div>
 </div>
 
-<!-- ============ PREMIUM FOOTER ============ -->
 <footer>
   <div class="footer-content">
     <div class="footer-brand">
@@ -516,7 +430,16 @@
 <a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
 
 <script>
-// ============ CURRENCY ============
+// ============================================
+// SUPABASE CONFIG
+// ============================================
+const SUPABASE_URL = "https://trdjgqlputsmlltvdrni.supabase.co";
+const SUPABASE_KEY = "sb_publishable_GNfLdqVkzZv77P97ycRESg_bz_8lHkP";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============================================
+// CURRENCY
+// ============================================
 const currencyRates = {
   PKR: { rate: 1, symbol: 'Rs ', code: 'PKR' }, USD: { rate: 0.0036, symbol: '$', code: 'USD' },
   EUR: { rate: 0.0033, symbol: '€', code: 'EUR' }, GBP: { rate: 0.0028, symbol: '£', code: 'GBP' },
@@ -562,35 +485,74 @@ function detectCurrency() {
     currencyCode = tzMap[tz] || 'PKR';
   } catch (err) { currencyCode = 'PKR'; }
   currentCurrency = currencyRates[currencyCode] || currencyRates.PKR;
-  document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
+  const badge = document.getElementById('currencyBadge');
+  if (badge) badge.textContent = `💱 ${currentCurrency.code}`;
   detectCountry();
-  renderProducts(products);
-  renderPremiumSlideshow();
 }
 
 function convertPrice(pkrPrice) {
-  const converted = pkrPrice * currentCurrency.rate;
+  const price = Number(pkrPrice) || 0;
+  const converted = price * currentCurrency.rate;
   if (['PKR','INR','BDT'].includes(currentCurrency.code)) return currentCurrency.symbol + Math.round(converted).toLocaleString();
   return currentCurrency.symbol + converted.toFixed(2);
 }
 
-// ============ PRODUCTS ============
-const defaultProducts = [
-  { id: 1, name: "Classic Leather Watch", brand: "Fossil", originalPrice: 8999, discountedPrice: 4999, description: "Premium leather strap with stainless steel case. Water resistant. Verified on Amazon.", mainImage: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=400&fit=crop","https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/3TVOvP0" },
-  { id: 2, name: "Luxury Gold Watch", brand: "Rolex", originalPrice: 19999, discountedPrice: 12999, description: "Elegant gold-plated design. Automatic movement, sapphire crystal. A timeless classic.", mainImage: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/47LIvvw" },
-  { id: 3, name: "Smart Watch Pro", brand: "Apple", originalPrice: 11999, discountedPrice: 6499, description: "AMOLED display, heart rate monitor, GPS tracking. Fast delivery on Amazon.", mainImage: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/4ySjdYH" },
-  { id: 4, name: "Chronograph Sport Watch", brand: "Seiko", originalPrice: 15999, discountedPrice: 8999, description: "Chronograph with tachymeter bezel. Japanese movement, stainless steel construction.", mainImage: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/4hQEJG5" },
-  { id: 5, name: "Minimalist Slim Watch", brand: "Daniel Wellington", originalPrice: 7499, discountedPrice: 3999, description: "Ultra-slim minimalist design with mesh strap. Lightweight everyday wear.", mainImage: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/3TVOvP0" },
-  { id: 6, name: "Diver Pro Watch", brand: "Casio", originalPrice: 16999, discountedPrice: 9999, description: "200m water resistant, luminous hands, screw-down crown. Built for adventure.", mainImage: "https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop", images: ["https://images.unsplash.com/photo-1526045431048-f857369baa09?w=600&h=400&fit=crop"], video: "", affiliateLink: "https://amzn.to/4yyoT9v" }
-];
+// ============================================
+// PRODUCTS — LOAD FROM SUPABASE
+// ============================================
+let products = [];
 
-let products = JSON.parse(localStorage.getItem('watchProducts')) || defaultProducts;
-if (!localStorage.getItem('watchProducts')) localStorage.setItem('watchProducts', JSON.stringify(defaultProducts));
+async function loadProductsFromSupabase() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '<div class="loading-products">⏳ Products load ho rahe hain...</div>';
 
-// ============ PREMIUM SLIDESHOW ============
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Supabase load error:', error);
+    grid.innerHTML = '<div class="loading-products">⚠️ Products load nahi ho sake. Baad mein try karein.</div>';
+    return;
+  }
+
+  // Map Supabase row → frontend product shape
+  products = (data || []).map(p => {
+    const imagesArr = p.images ? p.images.split(',').map(s => s.trim()).filter(v => v) : [];
+    return {
+      id: p.id,
+      name: p.name || 'Untitled Watch',
+      brand: p.brand || 'Unknown',
+      originalPrice: Number(p.original_price) || 0,
+      discountedPrice: Number(p.discounted_price) || 0,
+      description: p.description || '',
+      images: imagesArr,
+      mainImage: imagesArr[0] || 'https://via.placeholder.com/600x600/1a1a1a/d4af37?text=Watch',
+      video: p.video || '',
+      affiliateLink: p.affiliate_link || '#'
+    };
+  });
+
+  if (products.length === 0) {
+    grid.innerHTML = '<div class="loading-products">📦 Abhi koi product available nahi hai. Jald aa rahe hain!</div>';
+    // Hide slideshow content gracefully
+    document.getElementById('premiumSlideshow').style.display = 'none';
+    document.getElementById('premiumInfoRow').style.display = 'none';
+    return;
+  }
+
+  renderBrandFilters();
+  renderProducts(products);
+  renderPremiumSlideshow();
+}
+
+// ============================================
+// PREMIUM SLIDESHOW
+// ============================================
 let slideIndex = 0;
 let slideTimer = null;
-const SLIDE_INTERVAL = 4000; // 4 seconds
+const SLIDE_INTERVAL = 4000;
 
 function renderPremiumSlideshow() {
   const slideshow = document.getElementById('premiumSlideshow');
@@ -599,10 +561,12 @@ function renderPremiumSlideshow() {
 
   if (!slideshow || !products.length) return;
 
-  // Remove old slides (but keep nav buttons, dots, counter)
+  slideshow.style.display = 'block';
+  document.getElementById('premiumInfoRow').style.display = 'flex';
+
+  // Remove old slides
   slideshow.querySelectorAll('.premium-slide').forEach(s => s.remove());
 
-  // Build slides — insert BEFORE the prev button so z-order is right
   const prevBtn = document.getElementById('slidePrev');
   products.forEach((p, i) => {
     const slide = document.createElement('div');
@@ -612,19 +576,14 @@ function renderPremiumSlideshow() {
     slideshow.insertBefore(slide, prevBtn);
   });
 
-  // Build dots
   dotsContainer.innerHTML = products.map((p, i) => `<button class="slide-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Slide ${i+1}"></button>`).join('');
   dotsContainer.querySelectorAll('.slide-dot').forEach(dot => {
     dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
   });
 
-  // Update counter
   counter.textContent = `1 / ${products.length}`;
-
-  // Update info + CTA
+  slideIndex = 0;
   updateSlideInfo(0);
-
-  // Start autoplay
   startAutoplay();
 }
 
@@ -681,9 +640,11 @@ function restartAutoplay() {
   startAutoplay();
 }
 
-// ============ PRODUCT GRID ============
+// ============================================
+// PRODUCT GRID
+// ============================================
 function renderBrandFilters() {
-  const brands = ['all', ...new Set(products.map(p => p.brand))];
+  const brands = ['all', ...new Set(products.map(p => p.brand).filter(Boolean))];
   const container = document.getElementById('brandFilters');
   container.innerHTML = brands.map(b => `<button class="brand-btn ${b === 'all' ? 'active' : ''}" data-brand="${b}">${b === 'all' ? 'All Brands' : b}</button>`).join('');
   container.querySelectorAll('.brand-btn').forEach(btn => {
@@ -699,8 +660,14 @@ function renderBrandFilters() {
 function renderProducts(list) {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
+
+  if (!list || list.length === 0) {
+    grid.innerHTML = '<div class="loading-products">📦 Is brand mein koi product nahi mila.</div>';
+    return;
+  }
+
   grid.innerHTML = list.map(p => `
-    <div class="product-card" onclick="openQuickView(${p.id})">
+    <div class="product-card" onclick="openQuickView('${p.id}')">
       <img src="${p.mainImage}" alt="${p.name} - ${p.brand} watch available on Amazon" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/d4af37?text=Watch'">
       <div class="product-info">
         <h3>${p.name}</h3>
@@ -713,29 +680,41 @@ function renderProducts(list) {
 }
 
 function openQuickView(id) {
-  const product = products.find(p => p.id === id);
+  const product = products.find(p => String(p.id) === String(id));
   if (!product) return;
+
   const images = (product.images && product.images.length > 0) ? product.images : [product.mainImage];
   const mainImg = document.getElementById('modalMainImage');
-  mainImg.src = images[0]; mainImg.alt = product.name;
+  mainImg.src = images[0]; 
+  mainImg.alt = product.name;
   mainImg.onerror = function() { this.src = 'https://via.placeholder.com/600x400/1a1a1a/d4af37?text=Watch'; };
+
   const thumbs = document.getElementById('modalThumbnails');
   if (images.length > 1) {
     thumbs.innerHTML = images.map((img, i) => `<img src="${img}" alt="View ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="switchModalImage('${img.replace(/'/g, "\\'")}', this)">`).join('');
     thumbs.style.display = 'flex';
-  } else { thumbs.innerHTML = ''; thumbs.style.display = 'none'; }
+  } else { 
+    thumbs.innerHTML = ''; 
+    thumbs.style.display = 'none'; 
+  }
+
   document.getElementById('modalTitle').textContent = product.name;
   document.getElementById('modalBrand').textContent = product.brand;
   document.getElementById('modalDiscountedPrice').textContent = convertPrice(product.discountedPrice);
   document.getElementById('modalOriginalPrice').textContent = convertPrice(product.originalPrice);
   document.getElementById('modalDescription').textContent = product.description || 'No description available.';
   document.getElementById('modalBuyBtn').href = product.affiliateLink;
+
   const videoSection = document.getElementById('modalVideoSection');
   const videoContainer = document.getElementById('modalVideoContainer');
   if (product.video && product.video.trim() !== '') {
     videoContainer.innerHTML = `<iframe src="${product.video}" allowfullscreen title="${product.name} video"></iframe>`;
     videoSection.style.display = 'block';
-  } else { videoContainer.innerHTML = ''; videoSection.style.display = 'none'; }
+  } else { 
+    videoContainer.innerHTML = ''; 
+    videoSection.style.display = 'none'; 
+  }
+
   document.getElementById('modalBuyBtn').onclick = () => trackClick(product);
   document.getElementById('quickViewModal').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -754,21 +733,31 @@ function closeModal() {
 
 function trackClick(product) {
   let clicks = JSON.parse(localStorage.getItem('watchClicks')) || [];
-  clicks.push({ productId: product.id, productName: product.name, brand: product.brand, currency: currentCurrency.code, country: currentCountry.name, countryCode: currentCountry.code, countryFlag: currentCountry.flag, date: new Date().toISOString().split('T')[0], timestamp: Date.now() });
+  clicks.push({ 
+    productId: product.id, 
+    productName: product.name, 
+    brand: product.brand, 
+    currency: currentCurrency.code, 
+    country: currentCountry.name, 
+    countryCode: currentCountry.code, 
+    countryFlag: currentCountry.flag, 
+    date: new Date().toISOString().split('T')[0], 
+    timestamp: Date.now() 
+  });
   localStorage.setItem('watchClicks', JSON.stringify(clicks));
 }
 
-// ============ INIT ============
+// ============================================
+// INIT
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  renderBrandFilters();
-  renderProducts(products);
-  detectCurrency(); // detects currency + renders premium slideshow at end
+  detectCurrency();
+  loadProductsFromSupabase();
 
   // Slideshow controls
   document.getElementById('slidePrev').addEventListener('click', prevSlide);
   document.getElementById('slideNext').addEventListener('click', nextSlide);
 
-  // Pause autoplay on hover
   const slideshow = document.getElementById('premiumSlideshow');
   slideshow.addEventListener('mouseenter', stopAutoplay);
   slideshow.addEventListener('mouseleave', startAutoplay);
@@ -778,7 +767,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('quickViewModal').addEventListener('click', (e) => { if (e.target.id === 'quickViewModal') closeModal(); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
-    // Arrow keys for slideshow (only if modal closed)
     if (!document.getElementById('quickViewModal').classList.contains('active')) {
       if (e.key === 'ArrowRight') nextSlide();
       if (e.key === 'ArrowLeft') prevSlide();
