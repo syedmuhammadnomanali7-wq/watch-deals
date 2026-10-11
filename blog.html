@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Watch Blog – Reviews, Guides & Amazon Deals | Watch Deals</title>
-  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post and share your passion.">
+  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post with images and share your passion.">
   <meta name="keywords" content="watch blog, watch reviews, watch buying guide, Amazon watch deals, luxury watch blog">
   <meta name="author" content="Syed Muhammad Noman Ali Shah">
   <link rel="canonical" href="https://watch-deals.vercel.app/blog.html">
@@ -35,10 +35,20 @@
     .blog-form input:focus, .blog-form textarea:focus { outline: none; border-color: var(--gold); }
     .blog-form button { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
     .blog-form button:hover { background: #c49b2e; }
+    .blog-form label { display: block; color: var(--gold); font-size: 13px; font-weight: 600; margin-bottom: 6px; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .help-text { color: #888; font-size: 12px; margin-top: -10px; margin-bottom: 15px; }
+
+    /* Image Upload Tabs */
+    .image-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+    .image-tab { background: transparent; color: #ccc; border: 1px solid #333; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .image-tab.active { background: var(--gold); color: var(--dark-bg); border-color: var(--gold); }
+    .image-preview { margin-top: 10px; max-width: 200px; border-radius: 8px; border: 1px solid var(--border); display: none; }
 
     .blog-posts { margin-top: 30px; }
-    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px 30px; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; }
+    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; overflow: hidden; }
     .blog-post:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .blog-post .post-image { width: 100%; height: 250px; object-fit: cover; display: block; }
+    .blog-post .post-content { padding: 25px 30px; }
     .blog-post h3 { color: var(--gold); font-size: 22px; margin-bottom: 8px; }
     .blog-post .meta { color: #777; font-size: 13px; margin-bottom: 15px; }
     .blog-post .excerpt { color: #ccc; line-height: 1.7; }
@@ -57,6 +67,8 @@
       .page-hero h1 { font-size: 28px; }
       .content-container { padding: 30px 20px; }
       .content-container h2 { font-size: 22px; }
+      .blog-post .post-image { height: 180px; }
+      .blog-post .post-content { padding: 20px; }
       .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
     }
   </style>
@@ -83,11 +95,31 @@
 
   <div class="blog-form">
     <h2>✍️ Write Your Own Blog Post</h2>
-    <p>Share your watch story, review, or buying tip with the community.</p>
+    <p>Share your watch story, review, or buying tip with the community. Image ke saath post zyada attractive lagti hai!</p>
     <form id="blogForm">
-      <input type="text" id="blogTitle" placeholder="Blog Title (e.g., Why I Love the Seiko 5)" required maxlength="100">
+      <label>Blog Title *</label>
+      <input type="text" id="blogTitle" placeholder="e.g., Why I Love the Seiko 5" required maxlength="100">
+
+      <label>Your Name *</label>
       <input type="text" id="blogAuthor" placeholder="Your Name" required maxlength="50">
+
+      <label>Blog Image (optional)</label>
+      <div class="image-tabs">
+        <button type="button" class="image-tab active" onclick="switchImageTab('url', event)">🔗 Image URL</button>
+        <button type="button" class="image-tab" onclick="switchImageTab('upload', event)">📤 Upload from Device</button>
+      </div>
+      <div id="urlTab">
+        <input type="url" id="blogImageUrl" placeholder="https://res.cloudinary.com/... ya koi bhi image URL">
+      </div>
+      <div id="uploadTab" style="display:none;">
+        <input type="file" id="blogImageFile" accept="image/*" onchange="previewBlogImage(event)" style="padding: 10px; cursor: pointer;">
+        <img id="blogImagePreview" class="image-preview" alt="Preview">
+      </div>
+      <p class="help-text">💡 Tip: Cloudinary se upload karke URL paste karen — zyada behtar aur tez hai.</p>
+
+      <label>Blog Content *</label>
       <textarea id="blogContent" placeholder="Write your blog post here... (Share your experience, review, or tip)" required maxlength="3000"></textarea>
+
       <button type="submit">📤 Publish Post</button>
     </form>
   </div>
@@ -107,15 +139,17 @@
   <p style="margin-top:5px;">💬 <a href="https://wa.me/923274002704" target="_blank">WhatsApp: 0327 400 2704</a></p>
 </footer>
 
-<a href="https://wa.me/923274002704?text=Hi%20Noman%2C%20I%20need%20help%20with%20a%20watch%20deal" class="whatsapp-float" target="_blank">💬</a>
+<a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
 
 <script>
+// ============ DEFAULT BLOG POSTS ============
 const defaultBlogPosts = [
   {
     id: 1,
     title: "5 Reasons Why Buying Watches from Amazon is 100% Safe",
     author: "Syed Muhammad Noman Ali Shah",
     content: "Amazon is the world's most trusted marketplace. When you buy a watch from Amazon, you get authenticity guarantees, secure payments, easy returns, and customer protection through Amazon's A-to-Z Guarantee. That's why every deal on this site links directly to Amazon — so you can shop with complete peace of mind.",
+    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&h=400&fit=crop",
     date: "2025-01-15",
     timestamp: 1736899200000
   },
@@ -124,6 +158,7 @@ const defaultBlogPosts = [
     title: "How to Spot a Fake Watch Before You Buy",
     author: "Syed Muhammad Noman Ali Shah",
     content: "Fake watches are everywhere, but buying from Amazon drastically reduces the risk. Always check the seller rating, read verified reviews, look for 'Amazon's Choice' or 'Sold by Amazon' badges, and compare the price with the official brand store. If a deal looks too good to be true, message me on WhatsApp and I'll verify it for you — for free!",
+    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800&h=400&fit=crop",
     date: "2025-01-20",
     timestamp: 1737331200000
   },
@@ -132,19 +167,56 @@ const defaultBlogPosts = [
     title: "Rolex vs Omega: Which Luxury Watch Should You Buy?",
     author: "Syed Muhammad Noman Ali Shah",
     content: "Both Rolex and Omega are Swiss legends, but they cater to different tastes. Rolex is about prestige, resale value, and timeless design. Omega offers superior movements, more innovation, and often better value for money. The best way to decide? Buy through Amazon where you can compare real reviews and get authentic products delivered safely.",
+    image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&h=400&fit=crop",
     date: "2025-01-25",
     timestamp: 1737763200000
   }
 ];
 
+// ============ LOAD POSTS ============
 let posts = JSON.parse(localStorage.getItem('watchBlogPosts')) || defaultBlogPosts;
 
+// ============ IMAGE TAB SWITCHING ============
+let blogImageMode = 'url';
+let uploadedBlogImage = '';
+
+function switchImageTab(mode, event) {
+  blogImageMode = mode;
+  document.querySelectorAll('.image-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('urlTab').style.display = mode === 'url' ? 'block' : 'none';
+  document.getElementById('uploadTab').style.display = mode === 'upload' ? 'block' : 'none';
+}
+
+function previewBlogImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Size check - 500KB se zyada nahi honi chahiye
+  if (file.size > 500000) {
+    alert('⚠️ Image bohat bari hai (500KB se zyada). Chhoti image use karen ya URL mode use karen.');
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    uploadedBlogImage = e.target.result;
+    const preview = document.getElementById('blogImagePreview');
+    preview.src = uploadedBlogImage;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============ ESCAPE HTML ============
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
 
+// ============ RENDER POSTS ============
 function renderPosts() {
   const container = document.getElementById('blogPosts');
   const sorted = [...posts].sort((a, b) => b.timestamp - a.timestamp);
@@ -154,32 +226,64 @@ function renderPosts() {
     return;
   }
   
-  container.innerHTML = sorted.map(post => `
-    <article class="blog-post">
-      <h3>${escapeHtml(post.title)}</h3>
-      <p class="meta">✍️ ${escapeHtml(post.author)} • 📅 ${post.date}</p>
-      <p class="excerpt">${escapeHtml(post.content).substring(0, 250)}${post.content.length > 250 ? '...' : ''}</p>
-    </article>
-  `).join('');
+  container.innerHTML = sorted.map(post => {
+    const imageHtml = post.image 
+      ? `<img src="${post.image}" alt="${escapeHtml(post.title)}" class="post-image" onerror="this.style.display='none'">` 
+      : '';
+    return `
+      <article class="blog-post">
+        ${imageHtml}
+        <div class="post-content">
+          <h3>${escapeHtml(post.title)}</h3>
+          <p class="meta">✍️ ${escapeHtml(post.author)} • 📅 ${post.date}</p>
+          <p class="excerpt">${escapeHtml(post.content).substring(0, 250)}${post.content.length > 250 ? '...' : ''}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
+// ============ FORM SUBMIT ============
 document.getElementById('blogForm').addEventListener('submit', (e) => {
   e.preventDefault();
+  
+  // Image get karen
+  const urlImage = document.getElementById('blogImageUrl').value.trim();
+  const finalImage = blogImageMode === 'upload' ? uploadedBlogImage : urlImage;
+  
   const newPost = {
     id: Date.now(),
     title: document.getElementById('blogTitle').value.trim(),
     author: document.getElementById('blogAuthor').value.trim(),
     content: document.getElementById('blogContent').value.trim(),
+    image: finalImage,
     date: new Date().toISOString().split('T')[0],
     timestamp: Date.now()
   };
+  
   posts.push(newPost);
-  localStorage.setItem('watchBlogPosts', JSON.stringify(posts));
+  
+  try {
+    localStorage.setItem('watchBlogPosts', JSON.stringify(posts));
+  } catch (err) {
+    alert('⚠️ Storage full! Purane posts delete karen ya image URL use karen.');
+    return;
+  }
+  
+  // Form reset
   document.getElementById('blogForm').reset();
+  document.getElementById('blogImagePreview').style.display = 'none';
+  uploadedBlogImage = '';
+  blogImageMode = 'url';
+  document.querySelectorAll('.image-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  document.getElementById('urlTab').style.display = 'block';
+  document.getElementById('uploadTab').style.display = 'none';
+  
   renderPosts();
   alert('✅ Your blog post has been published!');
 });
 
+// ============ INIT ============
 renderPosts();
 </script>
 
