@@ -7,6 +7,8 @@
   <meta name="robots" content="noindex, nofollow">
   <!-- Cloudinary Upload Widget -->
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root { --gold: #d4af37; --gold-dark: #c49b2e; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,6 +50,7 @@
 
     .btn-primary { background: var(--gold); color: var(--dark-bg); border: none; padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; margin-right: 10px; }
     .btn-primary:hover { background: var(--gold-dark); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 14px 35px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
     .btn-danger { background: #dc3545; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
 
@@ -65,6 +68,10 @@
 
     #customBrandDiv { display: none; margin-top: 10px; }
     #customBrandDiv label { color: var(--gold); }
+
+    .status-bar { text-align: center; padding: 10px; font-size: 14px; color: #888; }
+    .status-bar.ok { color: #4caf50; }
+    .status-bar.err { color: #dc3545; }
 
     footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
 
@@ -100,7 +107,7 @@
   <h1>Product Management Dashboard</h1>
 
   <div class="info-box">
-    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Brand dropdown mein <strong>"➕ Other"</strong> select karke apna custom brand name bhi likh sakte hain. Images <strong>direct Cloudinary</strong> par upload karne ke liye "📤 Upload to Cloudinary" button use karein.
+    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Brand dropdown mein <strong>"➕ Other"</strong> select karke apna custom brand name bhi likh sakte hain. Images <strong>direct Cloudinary</strong> par upload karne ke liye "📤 Upload to Cloudinary" button use karein. Saara data ab <strong>Supabase database</strong> mein save hota hai — har device par nazar aayega ✅
   </div>
 
   <section class="admin-form">
@@ -172,13 +179,14 @@
       <label>Amazon Affiliate Link *</label>
       <input type="url" id="affiliateLink" required placeholder="https://amzn.to/...">
 
-      <button type="submit" class="btn-primary">💾 Save Product</button>
+      <button type="submit" class="btn-primary" id="saveBtn">💾 Save Product</button>
       <button type="button" id="cancelEdit" class="btn-secondary" style="display:none;">Cancel</button>
     </form>
   </section>
 
   <section class="admin-list">
     <h2>📦 All Products (<span id="productCount">0</span>)</h2>
+    <div class="status-bar" id="statusBar">Loading products...</div>
     <table>
       <thead>
         <tr><th>Image</th><th>Name</th><th>Brand</th><th>Price</th><th>Images</th><th>Actions</th></tr>
@@ -195,10 +203,20 @@
 
 <script>
 /* ============================================================
-   ⚙️ CLOUDINARY CONFIG — YAHAN APNI VALUES DAALEIN
+   ⚙️ CLOUDINARY CONFIG
    ============================================================ */
-const CLOUDINARY_CLOUD_NAME = "qt1vdf51";        // e.g. "dxxxxxx"
-const CLOUDINARY_UPLOAD_PRESET = "watch_upload";  // e.g. "watch_deals_unsigned"
+const CLOUDINARY_CLOUD_NAME = "qt1vdf51";
+const CLOUDINARY_UPLOAD_PRESET = "watch_upload";
+
+/* ============================================================
+   ⚙️ SUPABASE CONFIG
+   ============================================================ */
+const SUPABASE_URL = "https://trdjgqlputsmlltvdrni.supabase.co";
+const SUPABASE_KEY = "sb_publishable_GNfLdqVkzZv77P97ycRESg_bz_8lHkP";
+
+// Supabase client initialize
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 /* ============================================================ */
 
 const ADMIN_PASSWORD = "NomanWatch2025";
@@ -207,6 +225,10 @@ const PREDEFINED_BRANDS = ['Rolex', 'Casio', 'Seiko', 'Apple', 'Samsung', 'Fossi
   'Michael Kors', 'Guess', 'Bulova', 'Swatch', 'Timex', 'Skagen', 'Movado',
   'Rado', 'OUPINKE'];
 
+let products = [];
+let editId = null;
+
+// ============ LOGIN ============
 function checkPassword() {
   const input = document.getElementById('adminPassword').value;
   if (input === ADMIN_PASSWORD) {
@@ -229,9 +251,17 @@ function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainHeader').style.display = 'flex';
   document.getElementById('adminDashboard').style.display = 'block';
+  loadProducts(); // Supabase se products load karo
 }
 
 if (sessionStorage.getItem('adminLoggedIn') === 'true') showDashboard();
+
+// ============ STATUS BAR ============
+function setStatus(msg, type = '') {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.className = 'status-bar ' + type;
+}
 
 // ============ BRAND HANDLER ============
 function handleBrandChange() {
@@ -273,11 +303,6 @@ function removeImageRow(btn) {
 
 // ============ CLOUDINARY UPLOAD WIDGET ============
 function openCloudinaryWidget() {
-  if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME') {
-    alert('⚠️ Pehle script mein CLOUDINARY_CLOUD_NAME aur CLOUDINARY_UPLOAD_PRESET set karein.');
-    return;
-  }
-
   const widget = cloudinary.createUploadWidget({
     cloudName: CLOUDINARY_CLOUD_NAME,
     uploadPreset: CLOUDINARY_UPLOAD_PRESET,
@@ -286,24 +311,19 @@ function openCloudinaryWidget() {
     sources: ['local', 'url', 'camera'],
     folder: 'watch-deals',
     clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
-    maxImageFileSize: 5000000 // 5MB
+    maxImageFileSize: 5000000
   }, (error, result) => {
     if (!error && result && result.event === "success") {
       fillImageUrl(result.info.secure_url);
     }
-    if (error) {
-      console.error('Cloudinary upload error:', error);
-    }
+    if (error) console.error('Cloudinary upload error:', error);
   });
-
   widget.open();
 }
 
-// Upload ki gayi image ka URL pehle khali input mein daalein, warna naya row banayein
 function fillImageUrl(url) {
   const inputs = document.querySelectorAll('#imagesContainer .image-input');
   let filled = false;
-
   for (let i = 0; i < inputs.length; i++) {
     if (!inputs[i].value.trim()) {
       inputs[i].value = url;
@@ -311,7 +331,6 @@ function fillImageUrl(url) {
       break;
     }
   }
-
   if (!filled) {
     const rows = document.querySelectorAll('#imagesContainer .image-row');
     if (rows.length >= 6) {
@@ -322,10 +341,38 @@ function fillImageUrl(url) {
   }
 }
 
-// ============ PRODUCTS ============
-let products = JSON.parse(localStorage.getItem('watchProducts')) || [];
-let editId = null;
+// ============ SUPABASE: LOAD PRODUCTS ============
+async function loadProducts() {
+  setStatus('⏳ Products load ho rahe hain...', '');
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
 
+  if (error) {
+    console.error('Load error:', error);
+    setStatus('❌ Products load nahi ho sake: ' + error.message, 'err');
+    return;
+  }
+
+  products = (data || []).map(p => ({
+    id: p.id,
+    name: p.name,
+    brand: p.brand,
+    originalPrice: p.original_price,
+    discountedPrice: p.discounted_price,
+    description: p.description,
+    images: p.images ? p.images.split(',').filter(v => v.trim()) : [],
+    mainImage: p.images ? p.images.split(',')[0] : '',
+    video: p.video,
+    affiliateLink: p.affiliate_link
+  }));
+
+  setStatus(`✅ ${products.length} product(s) load ho gaye`, 'ok');
+  renderTable();
+}
+
+// ============ RENDER TABLE ============
 function renderTable() {
   const tbody = document.getElementById('productTableBody');
   document.getElementById('productCount').textContent = products.length;
@@ -342,18 +389,19 @@ function renderTable() {
         <td><img src="${p.mainImage}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/50/1a1a1a/d4af37?text=W'"></td>
         <td>${p.name.substring(0, 30)}${p.name.length > 30 ? '...' : ''}</td>
         <td>${p.brand}</td>
-        <td>Rs ${p.discountedPrice.toLocaleString()}</td>
+        <td>Rs ${Number(p.discountedPrice).toLocaleString()}</td>
         <td>${imgCount} 📷</td>
         <td>
-          <button onclick="editProduct(${p.id})">✏️ Edit</button>
-          <button class="del" onclick="deleteProduct(${p.id})">🗑️ Delete</button>
+          <button onclick="editProduct('${p.id}')">✏️ Edit</button>
+          <button class="del" onclick="deleteProduct('${p.id}')">🗑️ Delete</button>
         </td>
       </tr>
     `;
   }).join('');
 }
 
-document.getElementById('productForm').addEventListener('submit', (e) => {
+// ============ SAVE PRODUCT (Add / Update) ============
+document.getElementById('productForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const imageInputs = document.querySelectorAll('#imagesContainer .image-input');
@@ -373,36 +421,58 @@ document.getElementById('productForm').addEventListener('submit', (e) => {
     }
   }
 
-  const product = {
-    id: editId || Date.now(),
+  const productData = {
     name: document.getElementById('productName').value.trim(),
     brand: brand,
-    originalPrice: parseInt(document.getElementById('originalPrice').value),
-    discountedPrice: parseInt(document.getElementById('discountedPrice').value),
+    original_price: parseInt(document.getElementById('originalPrice').value),
+    discounted_price: parseInt(document.getElementById('discountedPrice').value),
     description: document.getElementById('description').value.trim(),
-    mainImage: images[0],
-    images: images,
-    video: document.getElementById('video').value.trim(),
-    affiliateLink: document.getElementById('affiliateLink').value.trim()
+    images: images.join(','),  // comma-separated string
+    video: document.getElementById('video').value.trim() || null,
+    affiliate_link: document.getElementById('affiliateLink').value.trim()
   };
 
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = '⏳ Saving...';
+
+  let error;
+
   if (editId) {
-    products = products.map(p => p.id === editId ? product : p);
-    alert('✅ Product updated!');
+    // Update
+    const res = await supabaseClient
+      .from('products')
+      .update(productData)
+      .eq('id', editId);
+    error = res.error;
+    if (!error) alert('✅ Product updated!');
   } else {
-    products.push(product);
-    alert('✅ Product added!');
+    // Insert
+    const res = await supabaseClient
+      .from('products')
+      .insert([productData]);
+    error = res.error;
+    if (!error) alert('✅ Product added!');
   }
 
-  localStorage.setItem('watchProducts', JSON.stringify(products));
+  saveBtn.disabled = false;
+  saveBtn.textContent = '💾 Save Product';
+
+  if (error) {
+    console.error('Save error:', error);
+    alert('❌ Error: ' + error.message);
+    return;
+  }
+
   resetForm();
-  renderTable();
+  await loadProducts();
 });
 
+// ============ EDIT PRODUCT ============
 function editProduct(id) {
-  const p = products.find(p => p.id === id);
+  const p = products.find(p => String(p.id) === String(id));
   if (!p) return;
-  editId = id;
+  editId = p.id;
   document.getElementById('productName').value = p.name;
 
   const brandSelect = document.getElementById('productBrand');
@@ -437,22 +507,29 @@ function editProduct(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function deleteProduct(id) {
-  if (confirm('Delete this product?')) {
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem('watchProducts', JSON.stringify(products));
-    renderTable();
+// ============ DELETE PRODUCT ============
+async function deleteProduct(id) {
+  if (!confirm('Delete this product?')) return;
+  const { error } = await supabaseClient.from('products').delete().eq('id', id);
+  if (error) {
+    alert('❌ Error: ' + error.message);
+    return;
   }
+  await loadProducts();
 }
 
-function clearAllProducts() {
-  if (confirm('⚠️ Delete ALL products? This cannot be undone.')) {
-    products = [];
-    localStorage.setItem('watchProducts', JSON.stringify(products));
-    renderTable();
+// ============ DELETE ALL ============
+async function clearAllProducts() {
+  if (!confirm('⚠️ Delete ALL products? This cannot be undone.')) return;
+  const { error } = await supabaseClient.from('products').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  if (error) {
+    alert('❌ Error: ' + error.message);
+    return;
   }
+  await loadProducts();
 }
 
+// ============ RESET FORM ============
 function resetForm() {
   document.getElementById('productForm').reset();
   document.getElementById('editId').value = '';
@@ -473,8 +550,6 @@ function resetForm() {
 }
 
 document.getElementById('cancelEdit').onclick = resetForm;
-
-renderTable();
 </script>
 
 </body>
