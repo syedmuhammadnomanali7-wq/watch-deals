@@ -55,7 +55,7 @@
     .currency-badge { background: var(--card-bg); border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-left: 15px; }
 
     /* ============================================
-       PREMIUM HERO — REDESIGNED
+       PREMIUM HERO — WITH PRODUCT SLIDESHOW
        ============================================ */
     .hero { position: relative; padding: 60px 40px; background: radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.15), transparent 60%), linear-gradient(135deg, #0a0a0a 0%, #141414 50%, #0a0a0a 100%); overflow: hidden; }
     .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
@@ -80,31 +80,123 @@
     .hero-mini-trust div strong { color: var(--gold); font-size: 15px; }
     .hero-mini-trust .tick { color: #4caf50; font-size: 16px; }
 
-    /* RIGHT — Premium Watch Showcase */
+    /* RIGHT — Premium Watch SLIDESHOW */
     .hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
-    .premium-watch-card { position: relative; background: linear-gradient(160deg, #1a1a1a, #0f0f0f); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 24px; padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212, 175, 55, 0.15); width: 100%; max-width: 440px; overflow: hidden; }
+    .premium-watch-card { position: relative; background: linear-gradient(160deg, #1a1a1a, #0f0f0f); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 24px; padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212, 175, 55, 0.15); width: 100%; max-width: 460px; overflow: hidden; }
     .premium-watch-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 60%); animation: rotateGlow 8s linear infinite; pointer-events: none; }
     @keyframes rotateGlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    .premium-badge-top { position: absolute; top: 20px; left: 20px; background: linear-gradient(135deg, #d4af37, #b8941f); color: #0a0a0a; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; z-index: 3; }
-    .premium-watch-img-wrap { position: relative; border-radius: 18px; overflow: hidden; background: radial-gradient(circle at center, #222, #0a0a0a); aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    .premium-watch-img-wrap img { width: 90%; height: 90%; object-fit: cover; border-radius: 14px; transition: transform 0.6s ease; position: relative; z-index: 2; }
-    .premium-watch-card:hover .premium-watch-img-wrap img { transform: scale(1.08) rotate(-2deg); }
+    .premium-badge-top { position: absolute; top: 20px; left: 20px; background: linear-gradient(135deg, #d4af37, #b8941f); color: #0a0a0a; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; z-index: 5; }
 
-    .premium-info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
-    .premium-info-row h3 { color: #fff; font-size: 20px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+    /* SLIDESHOW CONTAINER */
+    .premium-slideshow {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #222, #0a0a0a);
+      aspect-ratio: 1/1;
+      margin-bottom: 20px;
+      z-index: 2;
+    }
+    .premium-slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5%;
+    }
+    .premium-slide.active { opacity: 1; z-index: 2; }
+    .premium-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      transition: transform 0.6s ease;
+    }
+    .premium-watch-card:hover .premium-slide.active img { transform: scale(1.06) rotate(-2deg); }
+
+    /* SLIDE NAV ARROWS */
+    .slide-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--gold);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      transition: all 0.3s;
+      backdrop-filter: blur(4px);
+    }
+    .slide-nav:hover { background: var(--gold); color: #0a0a0a; border-color: var(--gold); transform: translateY(-50%) scale(1.1); }
+    .slide-nav.prev { left: 12px; }
+    .slide-nav.next { right: 12px; }
+
+    /* SLIDE DOTS */
+    .slide-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 6;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .slide-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      padding: 0;
+    }
+    .slide-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
+
+    /* SLIDE COUNTER */
+    .slide-counter {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--gold);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      z-index: 6;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .premium-info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px; position: relative; z-index: 2; transition: opacity 0.4s; }
+    .premium-info-row h3 { color: #fff; font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
     .premium-info-row .brand-line { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
     .premium-price { text-align: right; flex-shrink: 0; }
-    .premium-price .now { color: var(--gold); font-size: 26px; font-weight: 900; display: block; line-height: 1; }
-    .premium-price .was { color: #666; font-size: 14px; text-decoration: line-through; margin-top: 4px; display: block; }
+    .premium-price .now { color: var(--gold); font-size: 24px; font-weight: 900; display: block; line-height: 1; }
+    .premium-price .was { color: #666; font-size: 13px; text-decoration: line-through; margin-top: 4px; display: block; }
 
-    .premium-cta { display: flex; align-items: center; gap: 12px; }
+    .premium-cta { display: flex; align-items: center; gap: 12px; position: relative; z-index: 2; }
     .premium-cta .buy-now { flex: 1; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--dark-bg); padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.3s; letter-spacing: 0.5px; }
     .premium-cta .buy-now:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
     .premium-cta .details-btn { background: transparent; border: 1px solid var(--border); color: #ccc; padding: 13px 18px; border-radius: 10px; cursor: pointer; font-size: 13px; transition: all 0.3s; }
     .premium-cta .details-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-    .premium-rating { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; color: #999; }
+    .premium-rating { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; color: #999; position: relative; z-index: 2; }
     .premium-rating .stars { color: var(--gold); letter-spacing: 1px; }
 
     .trust-badges { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 60px auto 20px; padding: 25px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); max-width: 1000px; }
@@ -164,275 +256,41 @@
       padding: 50px 40px 20px;
       position: relative;
     }
+    footer::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); }
+    .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 40px; padding-bottom: 40px; }
+    .footer-brand .footer-logo { font-size: 24px; font-weight: bold; color: #d4af37; letter-spacing: 3px; margin-bottom: 12px; }
+    .footer-tagline { color: #888; font-size: 14px; line-height: 1.6; max-width: 300px; }
+    .footer-links h4, .footer-contact h4 { color: #d4af37; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px; position: relative; padding-bottom: 10px; }
+    .footer-links h4::after, .footer-contact h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px; background: #d4af37; }
+    .footer-links { display: flex; flex-direction: column; }
+    .footer-links a { color: #999; font-size: 14px; padding: 6px 0; margin: 0; transition: all 0.3s; display: inline-block; width: fit-content; }
+    .footer-links a:hover { color: #d4af37; transform: translateX(5px); }
+    .footer-contact { display: flex; flex-direction: column; }
+    .footer-contact-item { display: flex; align-items: center; gap: 10px; color: #999; font-size: 13px; padding: 7px 0; margin: 0; transition: color 0.3s; word-break: break-all; }
+    .footer-contact-item:hover { color: #d4af37; }
+    .footer-contact-item .icon { font-size: 15px; flex-shrink: 0; }
+    .footer-divider { max-width: 1200px; margin: 0 auto 30px; height: 1px; background: linear-gradient(90deg, transparent, #2a2a2a, #d4af37, #2a2a2a, transparent); }
 
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #d4af37, transparent);
-    }
+    .footer-signature { max-width: 1200px; margin: 0 auto 30px; padding: 22px 30px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(212, 175, 55, 0.02)); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative; overflow: hidden; transition: all 0.3s; }
+    .footer-signature::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #d4af37, #b8941f); }
+    .footer-signature:hover { border-color: rgba(212, 175, 55, 0.5); background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03)); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1); }
+    .signature-left { display: flex; flex-direction: column; gap: 6px; }
+    .signature-label { color: #666; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+    .signature-brand { display: inline-flex; align-items: center; gap: 10px; color: #d4af37; font-size: 20px; font-weight: 800; letter-spacing: 1px; transition: all 0.3s; text-decoration: none; }
+    .signature-brand:hover { color: #f4d77a; transform: translateX(3px); }
+    .signature-brand .brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, #d4af37, #b8941f); color: #0a0a0a; border-radius: 50%; font-size: 16px; font-weight: 900; animation: sparkle 3s infinite; }
+    @keyframes sparkle { 0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); } 50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); } }
+    .signature-brand .brand-name { background: linear-gradient(135deg, #d4af37 0%, #f4d77a 50%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .signature-right { display: flex; align-items: center; }
+    .signature-whatsapp { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #25D366, #1ebe5a); color: #fff; padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 14px; transition: all 0.3s; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+    .signature-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5); background: linear-gradient(135deg, #1ebe5a, #25D366); }
+    .signature-whatsapp .wa-icon { font-size: 16px; animation: pulseWa 2s infinite; }
+    @keyframes pulseWa { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    .signature-whatsapp .wa-number { letter-spacing: 0.5px; }
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1.5fr;
-      gap: 40px;
-      padding-bottom: 40px;
-    }
-
-    .footer-brand .footer-logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #d4af37;
-      letter-spacing: 3px;
-      margin-bottom: 12px;
-    }
-
-    .footer-tagline {
-      color: #888;
-      font-size: 14px;
-      line-height: 1.6;
-      max-width: 300px;
-    }
-
-    .footer-links h4,
-    .footer-contact h4 {
-      color: #d4af37;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      position: relative;
-      padding-bottom: 10px;
-    }
-
-    .footer-links h4::after,
-    .footer-contact h4::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 30px;
-      height: 2px;
-      background: #d4af37;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .footer-links a {
-      color: #999;
-      font-size: 14px;
-      padding: 6px 0;
-      margin: 0;
-      transition: all 0.3s;
-      display: inline-block;
-      width: fit-content;
-    }
-
-    .footer-links a:hover {
-      color: #d4af37;
-      transform: translateX(5px);
-    }
-
-    .footer-contact {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .footer-contact-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #999;
-      font-size: 13px;
-      padding: 7px 0;
-      margin: 0;
-      transition: color 0.3s;
-      word-break: break-all;
-    }
-
-    .footer-contact-item:hover {
-      color: #d4af37;
-    }
-
-    .footer-contact-item .icon {
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-
-    .footer-divider {
-      max-width: 1200px;
-      margin: 0 auto 30px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #2a2a2a, #d4af37, #2a2a2a, transparent);
-    }
-
-    /* ============================================
-       DEVELOPER SIGNATURE — PREMIUM STYLE
-       ============================================ */
-    .footer-signature {
-      max-width: 1200px;
-      margin: 0 auto 30px;
-      padding: 22px 30px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(212, 175, 55, 0.02));
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-
-    .footer-signature::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(180deg, #d4af37, #b8941f);
-    }
-
-    .footer-signature:hover {
-      border-color: rgba(212, 175, 55, 0.5);
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03));
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
-    }
-
-    .signature-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .signature-label {
-      color: #666;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .signature-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: #d4af37;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
-
-    .signature-brand:hover {
-      color: #f4d77a;
-      transform: translateX(3px);
-    }
-
-    .signature-brand .brand-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #d4af37, #b8941f);
-      color: #0a0a0a;
-      border-radius: 50%;
-      font-size: 16px;
-      font-weight: 900;
-      animation: sparkle 3s infinite;
-    }
-
-    @keyframes sparkle {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
-    }
-
-    .signature-brand .brand-name {
-      background: linear-gradient(135deg, #d4af37 0%, #f4d77a 50%, #d4af37 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .signature-right {
-      display: flex;
-      align-items: center;
-    }
-
-    .signature-whatsapp {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #25D366, #1ebe5a);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 14px;
-      transition: all 0.3s;
-      text-decoration: none;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    }
-
-    .signature-whatsapp:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
-      background: linear-gradient(135deg, #1ebe5a, #25D366);
-    }
-
-    .signature-whatsapp .wa-icon {
-      font-size: 16px;
-      animation: pulseWa 2s infinite;
-    }
-
-    @keyframes pulseWa {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
-    .signature-whatsapp .wa-number {
-      letter-spacing: 0.5px;
-    }
-
-    /* ============================================
-       FOOTER BOTTOM
-       ============================================ */
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 25px;
-      border-top: 1px solid #1a1a1a;
-      text-align: center;
-    }
-
-    .footer-bottom p {
-      color: #666;
-      font-size: 13px;
-      line-height: 1.7;
-      margin-bottom: 8px;
-    }
-
-    .footer-bottom .affiliate-disclosure {
-      color: #555;
-      font-size: 12px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 25px; border-top: 1px solid #1a1a1a; text-align: center; }
+    .footer-bottom p { color: #666; font-size: 13px; line-height: 1.7; margin-bottom: 8px; }
+    .footer-bottom .affiliate-disclosure { color: #555; font-size: 12px; max-width: 800px; margin: 0 auto; }
 
     .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.5); z-index: 999; transition: transform 0.3s; }
     .whatsapp-float:hover { transform: scale(1.1); }
@@ -443,6 +301,7 @@
       .hero p.subtitle { margin-left: auto; margin-right: auto; }
       .hero-mini-trust { justify-content: center; }
       .hero h1 { font-size: 42px; }
+      .premium-watch-card { max-width: 440px; }
     }
     @media (max-width: 900px) { 
       .modal-body { flex-direction: column; } 
@@ -462,6 +321,11 @@
       .premium-watch-card { padding: 20px; }
       .premium-info-row { flex-direction: column; gap: 8px; }
       .premium-price { text-align: left; }
+      .premium-info-row h3 { font-size: 17px; }
+      .premium-price .now { font-size: 22px; }
+      .slide-nav { width: 34px; height: 34px; font-size: 17px; }
+      .slide-nav.prev { left: 8px; }
+      .slide-nav.next { right: 8px; }
       .section-title { font-size: 24px; }
       .products { padding: 0 15px 40px; gap: 20px; }
       .modal-body { padding: 20px; }
@@ -496,7 +360,7 @@
   </nav>
 </header>
 
-<!-- ============ PREMIUM HERO ============ -->
+<!-- ============ PREMIUM HERO WITH SLIDESHOW ============ -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
@@ -525,26 +389,33 @@
     <div class="hero-right" id="premium-pick">
       <div class="premium-watch-card">
         <div class="premium-badge-top">⭐ Premium Pick</div>
-        <div class="premium-watch-img-wrap">
-          <img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&h=800&fit=crop" alt="Rolex Submariner – Premium luxury watch available on Amazon" loading="eager">
+
+        <!-- SLIDESHOW -->
+        <div class="premium-slideshow" id="premiumSlideshow">
+          <!-- Slides injected by JS -->
+          <button class="slide-nav prev" id="slidePrev" aria-label="Previous">❮</button>
+          <button class="slide-nav next" id="slideNext" aria-label="Next">❯</button>
+          <div class="slide-counter" id="slideCounter">1 / 1</div>
+          <div class="slide-dots" id="slideDots"></div>
         </div>
-        <div class="premium-info-row">
+
+        <div class="premium-info-row" id="premiumInfoRow">
           <div>
-            <h3>Rolex Submariner Style</h3>
-            <div class="brand-line">Rolex • Swiss Luxury</div>
+            <h3 id="premiumName">Loading...</h3>
+            <div class="brand-line" id="premiumBrand">—</div>
           </div>
           <div class="premium-price">
-            <span class="now">Rs 12,999</span>
-            <span class="was">Rs 19,999</span>
+            <span class="now" id="premiumNow">—</span>
+            <span class="was" id="premiumWas">—</span>
           </div>
         </div>
         <div class="premium-cta">
-          <a href="#products" class="buy-now">🛒 Buy on Amazon</a>
-          <button class="details-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View All →</button>
+          <a href="#" id="premiumBuyBtn" class="buy-now" target="_blank" rel="noopener noreferrer sponsored">🛒 Buy on Amazon</a>
+          <button class="details-btn" id="premiumDetailsBtn">View Details →</button>
         </div>
         <div class="premium-rating">
           <span class="stars">★★★★★</span>
-          <span>4.9 · 2,340+ verified Amazon reviews</span>
+          <span id="premiumRatingText">Verified on Amazon</span>
         </div>
       </div>
     </div>
@@ -620,7 +491,6 @@
 
   <div class="footer-divider"></div>
 
-  <!-- Developer Signature -->
   <div class="footer-signature">
     <div class="signature-left">
       <span class="signature-label">Designed & Developed by</span>
@@ -695,6 +565,7 @@ function detectCurrency() {
   document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
   detectCountry();
   renderProducts(products);
+  renderPremiumSlideshow();
 }
 
 function convertPrice(pkrPrice) {
@@ -716,6 +587,101 @@ const defaultProducts = [
 let products = JSON.parse(localStorage.getItem('watchProducts')) || defaultProducts;
 if (!localStorage.getItem('watchProducts')) localStorage.setItem('watchProducts', JSON.stringify(defaultProducts));
 
+// ============ PREMIUM SLIDESHOW ============
+let slideIndex = 0;
+let slideTimer = null;
+const SLIDE_INTERVAL = 4000; // 4 seconds
+
+function renderPremiumSlideshow() {
+  const slideshow = document.getElementById('premiumSlideshow');
+  const dotsContainer = document.getElementById('slideDots');
+  const counter = document.getElementById('slideCounter');
+
+  if (!slideshow || !products.length) return;
+
+  // Remove old slides (but keep nav buttons, dots, counter)
+  slideshow.querySelectorAll('.premium-slide').forEach(s => s.remove());
+
+  // Build slides — insert BEFORE the prev button so z-order is right
+  const prevBtn = document.getElementById('slidePrev');
+  products.forEach((p, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'premium-slide' + (i === 0 ? ' active' : '');
+    slide.dataset.index = i;
+    slide.innerHTML = `<img src="${p.mainImage}" alt="${p.name} - ${p.brand} premium watch on Amazon" loading="${i === 0 ? 'eager' : 'lazy'}" onerror="this.src='https://via.placeholder.com/600x600/1a1a1a/d4af37?text=Watch'">`;
+    slideshow.insertBefore(slide, prevBtn);
+  });
+
+  // Build dots
+  dotsContainer.innerHTML = products.map((p, i) => `<button class="slide-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Slide ${i+1}"></button>`).join('');
+  dotsContainer.querySelectorAll('.slide-dot').forEach(dot => {
+    dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
+  });
+
+  // Update counter
+  counter.textContent = `1 / ${products.length}`;
+
+  // Update info + CTA
+  updateSlideInfo(0);
+
+  // Start autoplay
+  startAutoplay();
+}
+
+function goToSlide(index) {
+  if (!products.length) return;
+  slideIndex = (index + products.length) % products.length;
+
+  document.querySelectorAll('.premium-slide').forEach((s, i) => {
+    s.classList.toggle('active', i === slideIndex);
+  });
+  document.querySelectorAll('.slide-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === slideIndex);
+  });
+  document.getElementById('slideCounter').textContent = `${slideIndex + 1} / ${products.length}`;
+
+  updateSlideInfo(slideIndex);
+  restartAutoplay();
+}
+
+function updateSlideInfo(index) {
+  const p = products[index];
+  if (!p) return;
+
+  const infoRow = document.getElementById('premiumInfoRow');
+  infoRow.style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('premiumName').textContent = p.name;
+    document.getElementById('premiumBrand').textContent = `${p.brand} • Premium`;
+    document.getElementById('premiumNow').textContent = convertPrice(p.discountedPrice);
+    document.getElementById('premiumWas').textContent = convertPrice(p.originalPrice);
+
+    const buyBtn = document.getElementById('premiumBuyBtn');
+    buyBtn.href = p.affiliateLink;
+    buyBtn.onclick = () => trackClick(p);
+
+    document.getElementById('premiumDetailsBtn').onclick = () => openQuickView(p.id);
+
+    infoRow.style.opacity = '1';
+  }, 150);
+}
+
+function nextSlide() { goToSlide(slideIndex + 1); }
+function prevSlide() { goToSlide(slideIndex - 1); }
+
+function startAutoplay() {
+  stopAutoplay();
+  slideTimer = setInterval(nextSlide, SLIDE_INTERVAL);
+}
+function stopAutoplay() {
+  if (slideTimer) { clearInterval(slideTimer); slideTimer = null; }
+}
+function restartAutoplay() {
+  stopAutoplay();
+  startAutoplay();
+}
+
+// ============ PRODUCT GRID ============
 function renderBrandFilters() {
   const brands = ['all', ...new Set(products.map(p => p.brand))];
   const container = document.getElementById('brandFilters');
@@ -792,13 +758,32 @@ function trackClick(product) {
   localStorage.setItem('watchClicks', JSON.stringify(clicks));
 }
 
+// ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   renderBrandFilters();
   renderProducts(products);
-  detectCurrency();
+  detectCurrency(); // detects currency + renders premium slideshow at end
+
+  // Slideshow controls
+  document.getElementById('slidePrev').addEventListener('click', prevSlide);
+  document.getElementById('slideNext').addEventListener('click', nextSlide);
+
+  // Pause autoplay on hover
+  const slideshow = document.getElementById('premiumSlideshow');
+  slideshow.addEventListener('mouseenter', stopAutoplay);
+  slideshow.addEventListener('mouseleave', startAutoplay);
+
+  // Modal close
   document.getElementById('closeModal').addEventListener('click', closeModal);
   document.getElementById('quickViewModal').addEventListener('click', (e) => { if (e.target.id === 'quickViewModal') closeModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+    // Arrow keys for slideshow (only if modal closed)
+    if (!document.getElementById('quickViewModal').classList.contains('active')) {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    }
+  });
 });
 </script>
 
