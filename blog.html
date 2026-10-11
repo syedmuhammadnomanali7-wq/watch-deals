@@ -30,8 +30,115 @@
     .content-container { max-width: 900px; margin: 0 auto; padding: 50px 30px; color: #ddd; }
     .content-container h2 { color: var(--gold); font-size: 28px; margin: 20px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
 
+    /* ===== WRITE BLOG FORM ===== */
+    .write-blog-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--gold), #b8941f);
+      color: var(--dark-bg);
+      border: none;
+      padding: 15px 35px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 0 auto 20px;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+    }
+    .write-blog-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    }
+    .write-blog-toggle .plus-icon {
+      font-size: 20px;
+      font-weight: 900;
+      transition: transform 0.3s;
+    }
+    .write-blog-toggle.active .plus-icon {
+      transform: rotate(45deg);
+    }
+
+    .blog-form-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      margin-bottom: 0;
+    }
+    .blog-form-wrap.open {
+      max-height: 1200px;
+      margin-bottom: 40px;
+    }
+
+    .blog-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 10px;
+    }
+    .blog-form h2 { color: var(--gold); margin: 0 0 10px; font-size: 22px; border: none; padding: 0; }
+    .blog-form p.intro { color: #aaa; margin-bottom: 20px; font-size: 14px; }
+    .blog-form label {
+      display: block;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .blog-form input, .blog-form textarea {
+      width: 100%;
+      background: var(--dark-bg);
+      border: 1px solid #333;
+      color: #fff;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+    .blog-form input:focus, .blog-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .blog-form textarea { min-height: 180px; resize: vertical; }
+    .blog-form .help-text { color: #777; font-size: 12px; margin-top: 5px; }
+    .blog-form .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .blog-form .btn-publish {
+      background: linear-gradient(135deg, var(--gold), #b8941f);
+      color: var(--dark-bg);
+      border: none;
+      padding: 14px 35px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .blog-form .btn-publish:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    }
+    .blog-form .btn-cancel {
+      background: transparent;
+      color: #ccc;
+      border: 1px solid var(--border);
+      padding: 13px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .blog-form .btn-cancel:hover { border-color: var(--gold); color: var(--gold); }
+
     .blog-posts { margin-top: 30px; }
-    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; overflow: hidden; cursor: pointer; }
+    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; overflow: hidden; cursor: pointer; position: relative; }
     .blog-post:hover { border-color: var(--gold); transform: translateY(-3px); }
     .blog-post .post-image { width: 100%; height: 250px; object-fit: cover; display: block; }
     .blog-post .post-content { padding: 25px 30px; }
@@ -40,6 +147,21 @@
     .blog-post .excerpt { color: #ccc; line-height: 1.7; }
     .blog-post .read-more { display: inline-block; margin-top: 12px; color: var(--gold); font-weight: bold; font-size: 14px; }
     .blog-post:hover .read-more { text-decoration: underline; }
+
+    .user-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: linear-gradient(135deg, var(--gold), #b8941f);
+      color: var(--dark-bg);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 5px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
 
     .post-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 20px; overflow-y: auto; }
     .post-modal.active { display: flex; }
@@ -66,6 +188,7 @@
       nav a { margin: 0 8px; font-size: 13px; }
       .page-hero h1 { font-size: 28px; }
       .content-container { padding: 30px 20px; }
+      .blog-form { padding: 20px 15px; }
       .blog-post .post-image { height: 180px; }
       .blog-post .post-content { padding: 20px; }
       .post-modal { padding: 15px; }
@@ -97,8 +220,43 @@
 </section>
 
 <main class="content-container">
+
+  <!-- ============ WRITE BLOG TOGGLE BUTTON ============ -->
+  <button class="write-blog-toggle" id="writeBlogToggle">
+    <span class="plus-icon">+</span>
+    <span>Write Your Own Blog Post</span>
+  </button>
+
+  <!-- ============ WRITE BLOG FORM ============ -->
+  <div class="blog-form-wrap" id="blogFormWrap">
+    <div class="blog-form">
+      <h2>✍️ Write Your Blog Post</h2>
+      <p class="intro">Share your watch story, review, or buying tip with the community. Image ke saath post zyada attractive lagti hai!</p>
+      <form id="blogForm">
+        <label>Blog Title *</label>
+        <input type="text" id="blogTitle" placeholder="e.g., Why I Love the Seiko 5" required maxlength="100">
+
+        <label>Your Name *</label>
+        <input type="text" id="blogAuthor" placeholder="Your Name" required maxlength="50" value="Syed Muhammad Noman Ali Shah">
+
+        <label>Blog Image URL (optional)</label>
+        <input type="url" id="blogImageUrl" placeholder="https://images.unsplash.com/... ya Cloudinary URL">
+        <p class="help-text">💡 Tip: Cloudinary ya Unsplash se URL paste karein — zyada behtar aur tez hai.</p>
+
+        <label>Blog Content *</label>
+        <textarea id="blogContent" placeholder="Write your blog post here... (Share your experience, review, or tip)" required maxlength="5000"></textarea>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-publish">📤 Publish Post</button>
+          <button type="button" class="btn-cancel" id="cancelBlogBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <h2>Recent Posts</h2>
   <div class="blog-posts" id="blogPosts"></div>
+
 </main>
 
 <div id="postModal" class="post-modal" role="dialog" aria-modal="true">
@@ -126,7 +284,7 @@
 <a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
 
 <script>
-// ============ 10 SEO BLOG POSTS ============
+// ============ 10 SEO BLOG POSTS (DEFAULT) ============
 const defaultBlogPosts = [
   {
     id: 1,
@@ -220,8 +378,11 @@ const defaultBlogPosts = [
   }
 ];
 
-let posts = JSON.parse(localStorage.getItem('watchBlogPosts')) || defaultBlogPosts;
-if (!localStorage.getItem('watchBlogPosts')) localStorage.setItem('watchBlogPosts', JSON.stringify(defaultBlogPosts));
+// ============ USER BLOG POSTS (from form) ============
+let userPosts = JSON.parse(localStorage.getItem('watchUserBlogPosts')) || [];
+
+// Combine: default SEO blogs + user-submitted blogs
+let posts = [...defaultBlogPosts, ...userPosts];
 
 function escapeHtml(text) {
   const div = document.createElement('div');
@@ -236,10 +397,13 @@ function renderPosts() {
     container.innerHTML = '<p style="text-align:center; color:#777;">No blog posts yet.</p>';
     return;
   }
+  const userIds = userPosts.map(p => p.id);
   container.innerHTML = sorted.map(post => {
     const imageHtml = post.image ? `<img src="${post.image}" alt="${escapeHtml(post.title)}" class="post-image" onerror="this.style.display='none'">` : '';
+    const badge = userIds.includes(post.id) ? '<span class="user-badge">✍️ Your Post</span>' : '';
     return `
       <article class="blog-post" onclick="openPost(${post.id})">
+        ${badge}
         ${imageHtml}
         <div class="post-content">
           <h3>${escapeHtml(post.title)}</h3>
@@ -271,6 +435,76 @@ function closePostModal() {
   document.body.style.overflow = '';
 }
 
+// ============ WRITE BLOG TOGGLE ============
+const writeBlogToggle = document.getElementById('writeBlogToggle');
+const blogFormWrap = document.getElementById('blogFormWrap');
+
+writeBlogToggle.addEventListener('click', () => {
+  writeBlogToggle.classList.toggle('active');
+  blogFormWrap.classList.toggle('open');
+  if (blogFormWrap.classList.contains('open')) {
+    setTimeout(() => {
+      document.getElementById('blogTitle').focus();
+      blogFormWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
+});
+
+document.getElementById('cancelBlogBtn').addEventListener('click', () => {
+  writeBlogToggle.classList.remove('active');
+  blogFormWrap.classList.remove('open');
+});
+
+// ============ BLOG FORM SUBMIT ============
+document.getElementById('blogForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById('blogTitle').value.trim();
+  const author = document.getElementById('blogAuthor').value.trim();
+  const imageUrl = document.getElementById('blogImageUrl').value.trim();
+  const content = document.getElementById('blogContent').value.trim();
+
+  if (!title || !author || !content) {
+    alert('⚠️ Title, Name, aur Content zaroori hain.');
+    return;
+  }
+
+  const newPost = {
+    id: Date.now(),
+    title: title,
+    author: author,
+    content: content,
+    image: imageUrl || '',
+    date: new Date().toISOString().split('T')[0],
+    timestamp: Date.now()
+  };
+
+  // Save to user posts
+  userPosts.push(newPost);
+  try {
+    localStorage.setItem('watchUserBlogPosts', JSON.stringify(userPosts));
+  } catch (err) {
+    alert('⚠️ Storage full! Purane user posts delete karein.');
+    return;
+  }
+
+  // Update posts array
+  posts = [...defaultBlogPosts, ...userPosts];
+
+  // Reset form
+  document.getElementById('blogForm').reset();
+  document.getElementById('blogAuthor').value = 'Syed Muhammad Noman Ali Shah';
+  writeBlogToggle.classList.remove('active');
+  blogFormWrap.classList.remove('open');
+
+  // Re-render + scroll to top of posts
+  renderPosts();
+  document.getElementById('blogPosts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  alert('✅ Your blog post has been published! Scroll down to see it at the top.');
+});
+
+// ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   renderPosts();
   document.getElementById('closePostModal').addEventListener('click', closePostModal);
