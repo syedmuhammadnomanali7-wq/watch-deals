@@ -4,16 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Watch Deals – Best Luxury, Premium & Smart Watches Online 2026 | Amazon Verified</title>
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch Deals – Best Luxury, Premium & Smart Watches Online 2026 | Amazon Verified</title>
   <meta name="google-site-verification" content="05tFOxPWU6TJHrk3KDIrhOTRerUszyuImh5DmwaC1YY" />
-  
-  <!-- baaki meta tags yahan -->
-</head>
-  
   <meta name="description" content="Shop the best luxury watches, premium watches, smartwatches, and affordable watch deals online. Rolex, Casio, Seiko, Apple, Fossil, Omega — every deal personally researched by Syed Muhammad Noman Ali Shah and verified on Amazon.">
   <meta name="keywords" content="best watches, luxury watches, premium watches, watch deals, buy watches online, Amazon watches, Rolex watches, Casio watches, Seiko watches, smartwatches, affordable watches, best watches for men 2026, dive watches, dress watches, automatic watches, watch deals Pakistan">
   <meta name="author" content="Syed Muhammad Noman Ali Shah">
@@ -162,8 +153,286 @@
     .modal-desc { color: #ccc; font-size: 15px; line-height: 1.7; margin-bottom: 15px; }
     .modal-video iframe { width: 100%; height: 220px; border-radius: 10px; border: none; }
 
-    footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
-    footer a { color: var(--gold); margin: 0 5px; }
+    /* ============================================
+       PREMIUM FOOTER WITH DEVELOPER SIGNATURE
+       ============================================ */
+    footer {
+      background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+      color: #888;
+      border-top: 1px solid #222;
+      margin-top: 60px;
+      padding: 50px 40px 20px;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.5fr;
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+
+    .footer-brand .footer-logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #d4af37;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .footer-tagline {
+      color: #888;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    .footer-links h4,
+    .footer-contact h4 {
+      color: #d4af37;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-links h4::after,
+    .footer-contact h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: #d4af37;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-links a {
+      color: #999;
+      font-size: 14px;
+      padding: 6px 0;
+      margin: 0;
+      transition: all 0.3s;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .footer-links a:hover {
+      color: #d4af37;
+      transform: translateX(5px);
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #999;
+      font-size: 13px;
+      padding: 7px 0;
+      margin: 0;
+      transition: color 0.3s;
+      word-break: break-all;
+    }
+
+    .footer-contact-item:hover {
+      color: #d4af37;
+    }
+
+    .footer-contact-item .icon {
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .footer-divider {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a2a2a, #d4af37, #2a2a2a, transparent);
+    }
+
+    /* ============================================
+       DEVELOPER SIGNATURE — PREMIUM STYLE
+       ============================================ */
+    .footer-signature {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      padding: 22px 30px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(212, 175, 55, 0.02));
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .footer-signature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #d4af37, #b8941f);
+    }
+
+    .footer-signature:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03));
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
+    }
+
+    .signature-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .signature-label {
+      color: #666;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .signature-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #d4af37;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .signature-brand:hover {
+      color: #f4d77a;
+      transform: translateX(3px);
+    }
+
+    .signature-brand .brand-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #d4af37, #b8941f);
+      color: #0a0a0a;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 900;
+      animation: sparkle 3s infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+    }
+
+    .signature-brand .brand-name {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d77a 50%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .signature-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .signature-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #25D366, #1ebe5a);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+
+    .signature-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+      background: linear-gradient(135deg, #1ebe5a, #25D366);
+    }
+
+    .signature-whatsapp .wa-icon {
+      font-size: 16px;
+      animation: pulseWa 2s infinite;
+    }
+
+    @keyframes pulseWa {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .signature-whatsapp .wa-number {
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================
+       FOOTER BOTTOM
+       ============================================ */
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 25px;
+      border-top: 1px solid #1a1a1a;
+      text-align: center;
+    }
+
+    .footer-bottom p {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .footer-bottom .affiliate-disclosure {
+      color: #555;
+      font-size: 12px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
     .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.5); z-index: 999; transition: transform 0.3s; }
     .whatsapp-float:hover { transform: scale(1.1); }
@@ -175,7 +444,13 @@
       .hero-mini-trust { justify-content: center; }
       .hero h1 { font-size: 42px; }
     }
-    @media (max-width: 900px) { .modal-body { flex-direction: column; } .modal-main-img { height: 250px; } }
+    @media (max-width: 900px) { 
+      .modal-body { flex-direction: column; } 
+      .modal-main-img { height: 250px; } 
+      .footer-content { grid-template-columns: 1fr 1fr; gap: 30px; }
+      .footer-brand { grid-column: 1 / -1; text-align: center; }
+      .footer-brand .footer-tagline { margin: 0 auto; }
+    }
     @media (max-width: 600px) {
       header { flex-direction: column; padding: 15px; gap: 12px; }
       nav { justify-content: center; width: 100%; }
@@ -193,6 +468,16 @@
       .modal-info h2 { font-size: 19px; }
       .modal-price .discounted { font-size: 24px; }
       .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
+      
+      footer { padding: 40px 20px 15px; }
+      .footer-content { grid-template-columns: 1fr; text-align: center; gap: 25px; }
+      .footer-links, .footer-contact { align-items: center; }
+      .footer-links h4::after, .footer-contact h4::after { left: 50%; transform: translateX(-50%); }
+      .footer-contact-item { justify-content: center; }
+      .footer-signature { flex-direction: column; text-align: center; padding: 20px; }
+      .signature-left { align-items: center; }
+      .signature-brand { font-size: 17px; }
+      .signature-whatsapp { font-size: 13px; padding: 9px 16px; }
     }
   </style>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌚</text></svg>">
@@ -305,14 +590,57 @@
   </div>
 </div>
 
+<!-- ============ PREMIUM FOOTER ============ -->
 <footer>
-  <p>© 2026 Watch Deals. All rights reserved.</p>
-  <p style="margin-top:10px;">Affiliate Disclosure: As an Amazon Associate, we earn from qualifying purchases. Every deal is personally researched by Syed Muhammad Noman Ali Shah.</p>
-  <p style="margin-top:10px;">
-    <a href="about.html">About</a> | <a href="blog.html">Blog</a> | <a href="contact.html">Contact</a>
-  </p>
-  <p style="margin-top:10px;">📧 <a href="mailto:syedmuhammadnomanali7@gmail.com">syedmuhammadnomanali7@gmail.com</a></p>
-  <p style="margin-top:5px;">💬 <a href="https://wa.me/923274002704" target="_blank">WhatsApp: 0327 400 2704</a></p>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-logo">⌚ WATCH DEALS</div>
+      <p class="footer-tagline">Premium watches — personally researched, Amazon verified.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="blog.html">Watch Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-contact">
+      <h4>Get In Touch</h4>
+      <a href="mailto:syedmuhammadnomanali7@gmail.com" class="footer-contact-item">
+        <span class="icon">📧</span> syedmuhammadnomanali7@gmail.com
+      </a>
+      <a href="https://wa.me/923274002704" target="_blank" class="footer-contact-item">
+        <span class="icon">💬</span> Watch Deals: 0327 400 2704
+      </a>
+      <a href="https://wa.me/923266501314" target="_blank" class="footer-contact-item">
+        <span class="icon">💬</span> Developer: 0326 650 1314
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <!-- Developer Signature -->
+  <div class="footer-signature">
+    <div class="signature-left">
+      <span class="signature-label">Designed & Developed by</span>
+      <a href="https://wa.me/923266501314" target="_blank" class="signature-brand">
+        <span class="brand-icon">✦</span>
+        <span class="brand-name">Bilal Marghoob Creations</span>
+      </a>
+    </div>
+    <div class="signature-right">
+      <a href="https://wa.me/923266501314" target="_blank" class="signature-whatsapp" title="Contact on WhatsApp">
+        <span class="wa-icon">💬</span>
+        <span class="wa-number">+92 326 650 1314</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Watch Deals. All rights reserved.</p>
+    <p class="affiliate-disclosure">Affiliate Disclosure: As an Amazon Associate, we earn from qualifying purchases. Every deal is personally researched by Syed Muhammad Noman Ali Shah.</p>
+  </div>
 </footer>
 
 <a href="https://wa.me/923274002704" class="whatsapp-float" target="_blank">💬</a>
