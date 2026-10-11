@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Watch Blog – Reviews, Guides & Amazon Deals | Watch Deals</title>
-  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post with images and share your passion.">
+  <meta name="description" content="Read expert watch reviews, buying guides, and Amazon deal alerts. Write your own watch blog post with images.">
   <meta name="keywords" content="watch blog, watch reviews, watch buying guide, Amazon watch deals, luxury watch blog">
   <meta name="author" content="Syed Muhammad Noman Ali Shah">
   <link rel="canonical" href="https://watch-deals.vercel.app/blog.html">
@@ -38,20 +38,34 @@
     .blog-form label { display: block; color: var(--gold); font-size: 13px; font-weight: 600; margin-bottom: 6px; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; }
     .help-text { color: #888; font-size: 12px; margin-top: -10px; margin-bottom: 15px; }
 
-    /* Image Upload Tabs */
     .image-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
     .image-tab { background: transparent; color: #ccc; border: 1px solid #333; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
     .image-tab.active { background: var(--gold); color: var(--dark-bg); border-color: var(--gold); }
     .image-preview { margin-top: 10px; max-width: 200px; border-radius: 8px; border: 1px solid var(--border); display: none; }
 
     .blog-posts { margin-top: 30px; }
-    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; overflow: hidden; }
+    .blog-post { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0; margin-bottom: 25px; transition: border-color 0.3s, transform 0.3s; overflow: hidden; cursor: pointer; }
     .blog-post:hover { border-color: var(--gold); transform: translateY(-3px); }
     .blog-post .post-image { width: 100%; height: 250px; object-fit: cover; display: block; }
     .blog-post .post-content { padding: 25px 30px; }
     .blog-post h3 { color: var(--gold); font-size: 22px; margin-bottom: 8px; }
     .blog-post .meta { color: #777; font-size: 13px; margin-bottom: 15px; }
     .blog-post .excerpt { color: #ccc; line-height: 1.7; }
+    .blog-post .read-more { display: inline-block; margin-top: 12px; color: var(--gold); font-weight: bold; font-size: 14px; }
+    .blog-post:hover .read-more { text-decoration: underline; }
+
+    /* MODAL */
+    .post-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 20px; overflow-y: auto; }
+    .post-modal.active { display: flex; }
+    .post-modal-content { background: var(--card-bg); border-radius: 16px; max-width: 800px; width: 100%; border: 1px solid var(--border); position: relative; overflow: hidden; animation: modalFadeIn 0.3s ease; }
+    @keyframes modalFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .post-modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: var(--gold); border: none; font-size: 28px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; }
+    .post-modal-close:hover { background: var(--gold); color: var(--dark-bg); }
+    .post-modal-image { width: 100%; height: 300px; object-fit: cover; display: block; }
+    .post-modal-body { padding: 35px; }
+    .post-modal-body h2 { color: var(--gold); font-size: 28px; margin-bottom: 10px; line-height: 1.3; }
+    .post-modal-body .post-modal-meta { color: #888; font-size: 14px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+    .post-modal-body .post-modal-content-text { color: #ddd; font-size: 16px; line-height: 1.9; white-space: pre-wrap; }
 
     footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
     footer a { color: var(--gold); margin: 0 5px; }
@@ -69,6 +83,11 @@
       .content-container h2 { font-size: 22px; }
       .blog-post .post-image { height: 180px; }
       .blog-post .post-content { padding: 20px; }
+      .post-modal { padding: 15px; }
+      .post-modal-image { height: 200px; }
+      .post-modal-body { padding: 25px 20px; }
+      .post-modal-body h2 { font-size: 22px; }
+      .post-modal-body .post-modal-content-text { font-size: 15px; }
       .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
     }
   </style>
@@ -129,6 +148,19 @@
 
 </main>
 
+<!-- ============ POST READ MODAL ============ -->
+<div id="postModal" class="post-modal" role="dialog" aria-modal="true">
+  <div class="post-modal-content">
+    <button class="post-modal-close" id="closePostModal" aria-label="Close">&times;</button>
+    <img id="postModalImage" class="post-modal-image" src="" alt="">
+    <div class="post-modal-body">
+      <h2 id="postModalTitle"></h2>
+      <p class="post-modal-meta" id="postModalMeta"></p>
+      <p class="post-modal-content-text" id="postModalText"></p>
+    </div>
+  </div>
+</div>
+
 <footer>
   <p>© 2025 Watch Deals. All rights reserved.</p>
   <p style="margin-top:10px;">Affiliate Disclosure: As an Amazon Associate, we earn from qualifying purchases.</p>
@@ -148,7 +180,7 @@ const defaultBlogPosts = [
     id: 1,
     title: "5 Reasons Why Buying Watches from Amazon is 100% Safe",
     author: "Syed Muhammad Noman Ali Shah",
-    content: "Amazon is the world's most trusted marketplace. When you buy a watch from Amazon, you get authenticity guarantees, secure payments, easy returns, and customer protection through Amazon's A-to-Z Guarantee. That's why every deal on this site links directly to Amazon — so you can shop with complete peace of mind.",
+    content: "Amazon is the world's most trusted marketplace. When you buy a watch from Amazon, you get authenticity guarantees, secure payments, easy returns, and customer protection through Amazon's A-to-Z Guarantee.\n\nThat's why every deal on this site links directly to Amazon — so you can shop with complete peace of mind. Whether you're buying a budget Seiko or a luxury Rolex, Amazon's buyer protection ensures your money is safe.\n\nHere are 5 reasons why Amazon is the safest place to buy watches:\n\n1. 100% Authentic Products — Amazon verifies sellers and products.\n2. Secure Payment — Bank-level encryption protects your data.\n3. Easy Returns — Hassle-free return policy if you're not satisfied.\n4. Verified Reviews — Real customer reviews help you decide.\n5. A-to-Z Guarantee — Amazon protects every purchase.",
     image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&h=400&fit=crop",
     date: "2025-01-15",
     timestamp: 1736899200000
@@ -157,7 +189,7 @@ const defaultBlogPosts = [
     id: 2,
     title: "How to Spot a Fake Watch Before You Buy",
     author: "Syed Muhammad Noman Ali Shah",
-    content: "Fake watches are everywhere, but buying from Amazon drastically reduces the risk. Always check the seller rating, read verified reviews, look for 'Amazon's Choice' or 'Sold by Amazon' badges, and compare the price with the official brand store. If a deal looks too good to be true, message me on WhatsApp and I'll verify it for you — for free!",
+    content: "Fake watches are everywhere, but buying from Amazon drastically reduces the risk. Always check the seller rating, read verified reviews, look for 'Amazon's Choice' or 'Sold by Amazon' badges, and compare the price with the official brand store.\n\nIf a deal looks too good to be true, message me on WhatsApp and I'll verify it for you — for free!\n\nKey things to check:\n\n• Serial number and hologram\n• Weight and feel of the watch\n• Movement sound (ticking vs smooth)\n• Logo quality and alignment\n• Packaging and documentation\n\nRemember: Always buy from trusted sources like Amazon where you have buyer protection.",
     image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800&h=400&fit=crop",
     date: "2025-01-20",
     timestamp: 1737331200000
@@ -166,14 +198,13 @@ const defaultBlogPosts = [
     id: 3,
     title: "Rolex vs Omega: Which Luxury Watch Should You Buy?",
     author: "Syed Muhammad Noman Ali Shah",
-    content: "Both Rolex and Omega are Swiss legends, but they cater to different tastes. Rolex is about prestige, resale value, and timeless design. Omega offers superior movements, more innovation, and often better value for money. The best way to decide? Buy through Amazon where you can compare real reviews and get authentic products delivered safely.",
+    content: "Both Rolex and Omega are Swiss legends, but they cater to different tastes.\n\nRolex is about prestige, resale value, and timeless design. It's the watch you buy to make a statement.\n\nOmega offers superior movements, more innovation, and often better value for money. It's the watch you buy for craftsmanship.\n\nThe best way to decide? Buy through Amazon where you can compare real reviews and get authentic products delivered safely.",
     image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&h=400&fit=crop",
     date: "2025-01-25",
     timestamp: 1737763200000
   }
 ];
 
-// ============ LOAD POSTS ============
 let posts = JSON.parse(localStorage.getItem('watchBlogPosts')) || defaultBlogPosts;
 
 // ============ IMAGE TAB SWITCHING ============
@@ -191,14 +222,11 @@ function switchImageTab(mode, event) {
 function previewBlogImage(event) {
   const file = event.target.files[0];
   if (!file) return;
-
-  // Size check - 500KB se zyada nahi honi chahiye
   if (file.size > 500000) {
     alert('⚠️ Image bohat bari hai (500KB se zyada). Chhoti image use karen ya URL mode use karen.');
     event.target.value = '';
     return;
   }
-
   const reader = new FileReader();
   reader.onload = (e) => {
     uploadedBlogImage = e.target.result;
@@ -231,23 +259,52 @@ function renderPosts() {
       ? `<img src="${post.image}" alt="${escapeHtml(post.title)}" class="post-image" onerror="this.style.display='none'">` 
       : '';
     return `
-      <article class="blog-post">
+      <article class="blog-post" onclick="openPost(${post.id})">
         ${imageHtml}
         <div class="post-content">
           <h3>${escapeHtml(post.title)}</h3>
           <p class="meta">✍️ ${escapeHtml(post.author)} • 📅 ${post.date}</p>
           <p class="excerpt">${escapeHtml(post.content).substring(0, 250)}${post.content.length > 250 ? '...' : ''}</p>
+          <span class="read-more">Read Full Post →</span>
         </div>
       </article>
     `;
   }).join('');
 }
 
+// ============ OPEN POST MODAL ============
+function openPost(id) {
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+
+  const modal = document.getElementById('postModal');
+  const modalImage = document.getElementById('postModalImage');
+  
+  if (post.image) {
+    modalImage.src = post.image;
+    modalImage.style.display = 'block';
+  } else {
+    modalImage.src = '';
+    modalImage.style.display = 'none';
+  }
+
+  document.getElementById('postModalTitle').textContent = post.title;
+  document.getElementById('postModalMeta').textContent = `✍️ ${post.author} • 📅 ${post.date}`;
+  document.getElementById('postModalText').textContent = post.content;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePostModal() {
+  document.getElementById('postModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
 // ============ FORM SUBMIT ============
 document.getElementById('blogForm').addEventListener('submit', (e) => {
   e.preventDefault();
   
-  // Image get karen
   const urlImage = document.getElementById('blogImageUrl').value.trim();
   const finalImage = blogImageMode === 'upload' ? uploadedBlogImage : urlImage;
   
@@ -270,7 +327,6 @@ document.getElementById('blogForm').addEventListener('submit', (e) => {
     return;
   }
   
-  // Form reset
   document.getElementById('blogForm').reset();
   document.getElementById('blogImagePreview').style.display = 'none';
   uploadedBlogImage = '';
@@ -280,11 +336,21 @@ document.getElementById('blogForm').addEventListener('submit', (e) => {
   document.getElementById('uploadTab').style.display = 'none';
   
   renderPosts();
-  alert('✅ Your blog post has been published!');
+  alert('✅ Your blog post has been published! Click on it to read the full post.');
 });
 
 // ============ INIT ============
-renderPosts();
+document.addEventListener('DOMContentLoaded', () => {
+  renderPosts();
+  
+  document.getElementById('closePostModal').addEventListener('click', closePostModal);
+  document.getElementById('postModal').addEventListener('click', (e) => {
+    if (e.target.id === 'postModal') closePostModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePostModal();
+  });
+});
 </script>
 
 </body>
