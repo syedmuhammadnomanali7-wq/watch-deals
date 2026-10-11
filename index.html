@@ -232,7 +232,45 @@ function detectCurrency() {
   document.getElementById('currencyBadge').textContent = `💱 ${currentCurrency.code}`;
   renderProducts(products);
 }
+// Country detect karne ke liye timezone map
+const tzToCountry = {
+  'Asia/Karachi': { code: 'PK', name: 'Pakistan', flag: '🇵🇰' },
+  'Asia/Kolkata': { code: 'IN', name: 'India', flag: '🇮🇳' },
+  'Asia/Calcutta': { code: 'IN', name: 'India', flag: '🇮🇳' },
+  'Asia/Dhaka': { code: 'BD', name: 'Bangladesh', flag: '🇧🇩' },
+  'Asia/Dubai': { code: 'AE', name: 'UAE', flag: '🇦🇪' },
+  'Asia/Riyadh': { code: 'SA', name: 'Saudi Arabia', flag: '🇸🇦' },
+  'Asia/Kuala_Lumpur': { code: 'MY', name: 'Malaysia', flag: '🇲🇾' },
+  'Asia/Istanbul': { code: 'TR', name: 'Turkey', flag: '🇹🇷' },
+  'Asia/Tokyo': { code: 'JP', name: 'Japan', flag: '🇯🇵' },
+  'Asia/Shanghai': { code: 'CN', name: 'China', flag: '🇨🇳' },
+  'Asia/Singapore': { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
+  'America/New_York': { code: 'US', name: 'USA', flag: '🇺🇸' },
+  'America/Los_Angeles': { code: 'US', name: 'USA', flag: '🇺🇸' },
+  'America/Chicago': { code: 'US', name: 'USA', flag: '🇺🇸' },
+  'America/Denver': { code: 'US', name: 'USA', flag: '🇺🇸' },
+  'America/Toronto': { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  'America/Vancouver': { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  'Europe/London': { code: 'GB', name: 'UK', flag: '🇬🇧' },
+  'Europe/Paris': { code: 'FR', name: 'France', flag: '🇫🇷' },
+  'Europe/Berlin': { code: 'DE', name: 'Germany', flag: '🇩🇪' },
+  'Europe/Rome': { code: 'IT', name: 'Italy', flag: '🇮🇹' },
+  'Europe/Madrid': { code: 'ES', name: 'Spain', flag: '🇪🇸' },
+  'Europe/Amsterdam': { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
+  'Australia/Sydney': { code: 'AU', name: 'Australia', flag: '🇦🇺' },
+  'Australia/Melbourne': { code: 'AU', name: 'Australia', flag: '🇦🇺' }
+};
 
+let currentCountry = { code: 'PK', name: 'Pakistan', flag: '🇵🇰' };
+
+function detectCountry() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    currentCountry = tzToCountry[tz] || { code: 'XX', name: 'Unknown', flag: '🌍' };
+  } catch (err) {
+    currentCountry = { code: 'XX', name: 'Unknown', flag: '🌍' };
+  }
+}
 function convertPrice(pkrPrice) {
   const converted = pkrPrice * currentCurrency.rate;
   if (currentCurrency.code === 'PKR' || currentCurrency.code === 'INR' || currentCurrency.code === 'BDT') {
