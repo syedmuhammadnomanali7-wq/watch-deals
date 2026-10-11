@@ -59,6 +59,9 @@
     .info-box { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); border-radius: 10px; padding: 20px; margin-bottom: 30px; color: #ddd; font-size: 14px; }
     .help-text { color: #888; font-size: 12px; margin-top: 4px; }
 
+    #customBrandDiv { display: none; margin-top: 10px; }
+    #customBrandDiv label { color: var(--gold); }
+
     footer { text-align: center; padding: 40px 20px; background: #111; color: #666; border-top: 1px solid #222; margin-top: 40px; }
 
     @media (max-width: 600px) {
@@ -93,7 +96,7 @@
   <h1>Product Management Dashboard</h1>
 
   <div class="info-box">
-    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Images Cloudinary ya kisi bhi image hosting se laga sakte hain. Video ke liye YouTube embed URL use karen.
+    <strong>ℹ️ Info:</strong> Har product ke liye <strong>multiple images</strong> aur <strong>video</strong> add kar sakte hain. Brand dropdown mein <strong>"➕ Other"</strong> select karke apna custom brand name bhi likh sakte hain.
   </div>
 
   <section class="admin-form">
@@ -105,7 +108,7 @@
       <input type="text" id="productName" required placeholder="e.g., Classic Leather Watch">
 
       <label>Brand *</label>
-      <select id="productBrand" required>
+      <select id="productBrand" required onchange="handleBrandChange()">
         <option value="">-- Select Brand --</option>
         <option value="Rolex">Rolex</option>
         <option value="Casio">Casio</option>
@@ -128,7 +131,13 @@
         <option value="Movado">Movado</option>
         <option value="Rado">Rado</option>
         <option value="OUPINKE">OUPINKE</option>
+        <option value="Other">➕ Other (Manually Type)</option>
       </select>
+
+      <div id="customBrandDiv">
+        <label>✍️ Type Brand Name *</label>
+        <input type="text" id="customBrand" placeholder="e.g., Curren, Naviforce, Xiaomi..." maxlength="50">
+      </div>
 
       <label>Original Price (PKR) *</label>
       <input type="number" id="originalPrice" required placeholder="8999">
@@ -179,6 +188,10 @@
 
 <script>
 const ADMIN_PASSWORD = "NomanWatch2025";
+const PREDEFINED_BRANDS = ['Rolex', 'Casio', 'Seiko', 'Apple', 'Samsung', 'Fossil',
+  'Garmin', 'Citizen', 'Tissot', 'Omega', 'Tag Heuer', 'Daniel Wellington',
+  'Michael Kors', 'Guess', 'Bulova', 'Swatch', 'Timex', 'Skagen', 'Movado',
+  'Rado', 'OUPINKE'];
 
 function checkPassword() {
   const input = document.getElementById('adminPassword').value;
@@ -205,6 +218,23 @@ function showDashboard() {
 }
 
 if (sessionStorage.getItem('adminLoggedIn') === 'true') showDashboard();
+
+// ============ BRAND HANDLER ============
+function handleBrandChange() {
+  const select = document.getElementById('productBrand');
+  const customDiv = document.getElementById('customBrandDiv');
+  const customInput = document.getElementById('customBrand');
+  
+  if (select.value === 'Other') {
+    customDiv.style.display = 'block';
+    customInput.required = true;
+    customInput.focus();
+  } else {
+    customDiv.style.display = 'none';
+    customInput.required = false;
+    customInput.value = '';
+  }
+}
 
 // ============ IMAGE ROWS ============
 function addImageRow(value = '') {
@@ -269,10 +299,19 @@ document.getElementById('productForm').addEventListener('submit', (e) => {
     return;
   }
 
+  let brand = document.getElementById('productBrand').value;
+  if (brand === 'Other') {
+    brand = document.getElementById('customBrand').value.trim();
+    if (!brand) {
+      alert('⚠️ Brand name likhen ya dropdown se select karen.');
+      return;
+    }
+  }
+
   const product = {
     id: editId || Date.now(),
     name: document.getElementById('productName').value.trim(),
-    brand: document.getElementById('productBrand').value,
+    brand: brand,
     originalPrice: parseInt(document.getElementById('originalPrice').value),
     discountedPrice: parseInt(document.getElementById('discountedPrice').value),
     description: document.getElementById('description').value.trim(),
@@ -300,14 +339,29 @@ function editProduct(id) {
   if (!p) return;
   editId = id;
   document.getElementById('productName').value = p.name;
-  document.getElementById('productBrand').value = p.brand;
+
+  const brandSelect = document.getElementById('productBrand');
+  const customDiv = document.getElementById('customBrandDiv');
+  const customInput = document.getElementById('customBrand');
+
+  if (PREDEFINED_BRANDS.includes(p.brand)) {
+    brandSelect.value = p.brand;
+    customDiv.style.display = 'none';
+    customInput.value = '';
+    customInput.required = false;
+  } else {
+    brandSelect.value = 'Other';
+    customDiv.style.display = 'block';
+    customInput.value = p.brand;
+    customInput.required = true;
+  }
+
   document.getElementById('originalPrice').value = p.originalPrice;
   document.getElementById('discountedPrice').value = p.discountedPrice;
   document.getElementById('description').value = p.description;
   document.getElementById('video').value = p.video || '';
   document.getElementById('affiliateLink').value = p.affiliateLink;
 
-  // Load images
   const container = document.getElementById('imagesContainer');
   container.innerHTML = '';
   const imgs = (p.images && p.images.length) ? p.images : [p.mainImage];
@@ -337,6 +391,10 @@ function clearAllProducts() {
 function resetForm() {
   document.getElementById('productForm').reset();
   document.getElementById('editId').value = '';
+  document.getElementById('customBrandDiv').style.display = 'none';
+  document.getElementById('customBrand').value = '';
+  document.getElementById('customBrand').required = false;
+
   const container = document.getElementById('imagesContainer');
   container.innerHTML = `
     <div class="image-row">
