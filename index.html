@@ -57,12 +57,8 @@
     nav a:hover { color: var(--gold); }
     .currency-badge { background: var(--card-bg); border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-left: 15px; }
 
-    /* ============================================
-       PREMIUM HERO — WITH PRODUCT SLIDESHOW
-       ============================================ */
     .hero { position: relative; padding: 60px 40px; background: radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.15), transparent 60%), linear-gradient(135deg, #0a0a0a 0%, #141414 50%, #0a0a0a 100%); overflow: hidden; }
     .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
-    
     .hero-left { display: flex; flex-direction: column; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); color: var(--gold); padding: 6px 16px; border-radius: 25px; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; width: fit-content; margin-bottom: 20px; }
     .hero-eyebrow .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulseDot 1.5s infinite; }
@@ -518,10 +514,15 @@ async function loadProductsFromSupabase() {
   }
 
   // Map Supabase row → frontend product shape
-  products = (data || []).map(p => {
+  // FIX: id ke liye unique fallback use karo (agar Supabase se id na aaye ya same ho)
+  products = (data || []).map((p, idx) => {
     const imagesArr = p.images ? p.images.split(',').map(s => s.trim()).filter(v => v) : [];
+    // Unique ID: prefer Supabase id, warna index-based unique id
+    const uniqueId = (p.id !== undefined && p.id !== null && p.id !== '') 
+      ? ('sb-' + p.id) 
+      : ('product-' + idx);
     return {
-      id: p.id,
+      id: uniqueId,
       name: p.name || 'Untitled Watch',
       brand: p.brand || 'Unknown',
       originalPrice: Number(p.original_price) || 0,
@@ -536,7 +537,6 @@ async function loadProductsFromSupabase() {
 
   if (products.length === 0) {
     grid.innerHTML = '<div class="loading-products">📦 Abhi koi product available nahi hai. Jald aa rahe hain!</div>';
-    // Hide slideshow content gracefully
     document.getElementById('premiumSlideshow').style.display = 'none';
     document.getElementById('premiumInfoRow').style.display = 'none';
     return;
@@ -564,7 +564,6 @@ function renderPremiumSlideshow() {
   slideshow.style.display = 'block';
   document.getElementById('premiumInfoRow').style.display = 'flex';
 
-  // Remove old slides
   slideshow.querySelectorAll('.premium-slide').forEach(s => s.remove());
 
   const prevBtn = document.getElementById('slidePrev');
@@ -667,7 +666,7 @@ function renderProducts(list) {
   }
 
   grid.innerHTML = list.map(p => `
-    <div class="product-card" onclick="openQuickView('${p.id}')">
+    <div class="product-card" data-id="${p.id}">
       <img src="${p.mainImage}" alt="${p.name} - ${p.brand} watch available on Amazon" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/d4af37?text=Watch'">
       <div class="product-info">
         <h3>${p.name}</h3>
@@ -677,11 +676,22 @@ function renderProducts(list) {
       </div>
     </div>
   `).join('');
+
+  // FIX: Event delegation — har card ka apna data-id use hota hai
+  grid.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      openQuickView(id);
+    });
+  });
 }
 
 function openQuickView(id) {
   const product = products.find(p => String(p.id) === String(id));
-  if (!product) return;
+  if (!product) {
+    console.warn('Product not found for id:', id);
+    return;
+  }
 
   const images = (product.images && product.images.length > 0) ? product.images : [product.mainImage];
   const mainImg = document.getElementById('modalMainImage');
@@ -691,8 +701,15 @@ function openQuickView(id) {
 
   const thumbs = document.getElementById('modalThumbnails');
   if (images.length > 1) {
-    thumbs.innerHTML = images.map((img, i) => `<img src="${img}" alt="View ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="switchModalImage('${img.replace(/'/g, "\\'")}', this)">`).join('');
+    thumbs.innerHTML = images.map((img, i) => `<img src="${img}" alt="View ${i+1}" class="${i === 0 ? 'active' : ''}" data-url="${img}">`).join('');
     thumbs.style.display = 'flex';
+    thumbs.querySelectorAll('img').forEach(t => {
+      t.addEventListener('click', function() {
+        document.getElementById('modalMainImage').src = this.getAttribute('data-url');
+        thumbs.querySelectorAll('img').forEach(x => x.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
   } else { 
     thumbs.innerHTML = ''; 
     thumbs.style.display = 'none'; 
@@ -754,7 +771,6 @@ document.addEventListener('DOMContentLoaded', () => {
   detectCurrency();
   loadProductsFromSupabase();
 
-  // Slideshow controls
   document.getElementById('slidePrev').addEventListener('click', prevSlide);
   document.getElementById('slideNext').addEventListener('click', nextSlide);
 
@@ -762,7 +778,6 @@ document.addEventListener('DOMContentLoaded', () => {
   slideshow.addEventListener('mouseenter', stopAutoplay);
   slideshow.addEventListener('mouseleave', startAutoplay);
 
-  // Modal close
   document.getElementById('closeModal').addEventListener('click', closeModal);
   document.getElementById('quickViewModal').addEventListener('click', (e) => { if (e.target.id === 'quickViewModal') closeModal(); });
   document.addEventListener('keydown', (e) => {
