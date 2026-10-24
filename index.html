@@ -515,7 +515,20 @@ async function loadProductsFromSupabase() {
 
   // Map Supabase row → frontend product shape
   // FIX: id ke liye unique fallback use karo (agar Supabase se id na aaye ya same ho)
-  products = (data || []).map((p, idx) => {
+ // Latest uploaded products first
+const newestFirst = [...(data || [])].sort((a, b) => {
+  const dateA = a.created_at
+    ? new Date(a.created_at).getTime()
+    : 0;
+
+  const dateB = b.created_at
+    ? new Date(b.created_at).getTime()
+    : 0;
+
+  return dateB - dateA;
+});
+
+products = newestFirst.map((p, idx) => {
     const imagesArr = p.images ? p.images.split(',').map(s => s.trim()).filter(v => v) : [];
     // Unique ID: prefer Supabase id, warna index-based unique id
     const uniqueId = (p.id !== undefined && p.id !== null && p.id !== '') 
